@@ -79,8 +79,8 @@ def check_solution(solution_id: int):
             # logging.info(">>", test.input_data, *map(ord, test.input_data))
             # print(repr(test_result["stdout"].decode("utf-8").rstrip()), repr(test.output_data))
             if test_result["exit_code"] == 0:
-                test_answer = "\n".join(map(str.rstrip, test_result["stdout"].decode("utf-8").rstrip().replace("\r", "").split('\n')))
-                accept_answer = "\n".join(map(str.rstrip, (test.output_data if test.output_data else "").split("\n"))).replace("\r", "")
+                test_answer = "\n".join(map(str.rstrip, test_result["stdout"].decode("utf-8").rstrip().replace("\r", "").split('\n'))).rstrip()
+                accept_answer = "\n".join(map(str.rstrip, (test.output_data if test.output_data else "").split("\n"))).replace("\r", "").rstrip()
                 logging.info(test_answer)
                 logging.info(accept_answer)
                 logging.info([ord(c) for c in test_answer])
@@ -101,7 +101,7 @@ Your answer:
                     session.close()
                     return {"status": False}
             elif test_result["exit_code"] == 1:
-                solution.check_system_answer += f"Test № {i}\n{test_result['stderr'].decode('utf-8')}"
+                solution.check_system_answer += f"Test № {i}\nInput data:\n{input_data}\n{test_result['stderr'].decode('utf-8')}"
                 solution.status = SolutionStatus.ERROR
                 solution.time_finish = datetime.datetime.now()
                 session.commit()
