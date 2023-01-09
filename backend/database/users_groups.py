@@ -22,4 +22,5 @@ class UsersGroups(BaseSQLAlchemyModel):
     user = relationship("User", back_populates="groups")
     group = relationship("Group", back_populates="users")
 
-
+    def __repr__(self):
+        return f"GroupId:{self.group_id}, role:{self.role}"

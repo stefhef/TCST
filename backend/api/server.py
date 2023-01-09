@@ -16,6 +16,8 @@ from api.endpoints import user_router, auth_router, group_router, admin_router,\
 from services.solution_service import SolutionService
 from services.user_service import UserService
 
+from api.graphql_endpoints import graphql_router
+
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -32,6 +34,7 @@ app.include_router(task_router)
 app.include_router(chat_message_router)
 app.include_router(stat_router)
 
+app.include_router(graphql_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -53,6 +56,7 @@ async def login_for_access_token(response: Response,
     # u = await UserService.get_user_by_vk_id(form_data.username, session)
     # u.password = get_password_hash("123")
     # await session.commit()
+
     user = await authenticate_user(form_data.username, form_data.password, session)
     if not user:
         raise HTTPException(
