@@ -1,11 +1,14 @@
 from enum import IntEnum
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum
+import strawberry
+from sqlalchemy import Column, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 
 from database.base_meta import BaseSQLAlchemyModel
 
 
+# TODO Надо бы протестить
+@strawberry.enum
 class UserGroupRole(IntEnum):
     STUDENT: int = 0
     TEACHER: int = 1

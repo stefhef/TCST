@@ -66,6 +66,26 @@ export const request = async (requestConfig: IRequestConfig): Promise<any> => {
         .then(response => response.data);
 }
 
+
+export const updateAccessToken = async () => {
+    const axiosRefreshTokenRequestConfig: AxiosRequestConfig = {
+        method: "get",
+        url: `${baseApi}/auth/refresh_token`,
+        withCredentials: true
+    }
+    await axios(axiosRefreshTokenRequestConfig)
+        .then(async (refresh_token_response) => {
+            const login_data: IAuthLogin = refresh_token_response.data
+            console.log(login_data)
+            store.dispatch(AuthActionCreators.setLogin(login_data))
+            localStorage.setItem("access_token", decodeLocal(login_data.access_token))
+            return login_data.access_token
+        })
+        .catch(async () => {
+            await AuthActionCreators.logout()(store.dispatch)
+        })
+}
+
 export const baseApi = process.env.NODE_ENV === "production" ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL
 export const baseURL = process.env.NODE_ENV === "production" ? process.env.REACT_APP_PROD_SITE_URL : process.env.REACT_APP_DEV_SITE_URL
 export const vkClientId = process.env.NODE_ENV === "production" ? process.env.REACT_APP_PROD_VK_CLIENT_ID : process.env.REACT_APP_DEV_VK_CLIENT_ID

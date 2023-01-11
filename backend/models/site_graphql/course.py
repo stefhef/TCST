@@ -1,33 +1,33 @@
 from typing import List
-
 import strawberry
 from pydantic import BaseModel
-
-from models.graphql_sqlalchemy_core import CourseGrq
-from services.common import exclude_field
+from models.pydantic_sqlalchemy_core import CourseDto
 
 
-class CoursesResponse(BaseModel):
-    courses: List[CourseGrq]
-
-
-@strawberry.experimental.pydantic.type(model=CoursesResponse)
-class CoursesResponseGQL:
-    courses: strawberry.auto
-
-
-class CourseRequest(CourseGrq):
+@strawberry.experimental.pydantic.type(model=CourseDto, all_fields=True)
+class CourseGQL:
     pass
 
 
-@exclude_field("id")
-class CoursePostRequest(CourseRequest):
+class CoursesResponseDto(BaseModel):
+    courses: List[CourseGQL]
+
+
+@strawberry.experimental.pydantic.type(model=CoursesResponseDto, all_fields=True)
+class CoursesResponse:
     pass
+
+
+@strawberry.experimental.pydantic.type(model=CourseDto, all_fields=True)
+class CourseRequest:
+    pass
+
+
+@strawberry.experimental.pydantic.type(model=CourseDto)
+class CoursePostRequest:
+    name: strawberry.auto
+    description: strawberry.auto
 
 
 class CoursePutRequest(CourseRequest):
-    pass
-
-
-class CourseResponse(CourseGrq):
     pass

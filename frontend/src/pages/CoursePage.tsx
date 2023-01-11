@@ -14,18 +14,38 @@ import {
 
 import {BaseSpinner} from "../components/BaseSpinner";
 import {LessonPreviewForStudent} from "../components/LessonPreviewForStudent";
-import LessonService from "../services/LessonService";
 import {ILessonsResponse} from "../models/ILessonsResponse";
 import {ICourse} from "../models/ICourse";
-import CourseService from "../services/CourseService";
 import {IGroupRole} from "../models/IGroupRole";
-import GroupService from "../services/GroupService";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Layout} from "../components/layouts/Layout";
 import {LessonPreviewForTeacher} from "../components/LessonPreviewForTeacher";
+import {gql, useQuery} from "@apollo/client";
 
 
 const CoursePage: FunctionComponent = () => {
+
+    const QUERY = gql`query All($courseId: Int!, $groupId: Int!) {
+        get_role(group_id: $groupId),
+        get_lessons(group_id: $groupId, course_id: $courseId) {
+            lessons {
+                id,
+                name,
+                description
+            },
+            course_name,
+            course_description
+        },
+        get_courses(group_id: $groupId) {
+            courses {
+                id,
+                name,
+                description,
+
+            }
+        }
+    }`
+
     const {courseId, groupId} = useParams();
     const [lessonsResponse, setLessonsResponse] = useState<ILessonsResponse>()
     const [course, setCourse] = useState<ICourse>()
@@ -33,21 +53,27 @@ const CoursePage: FunctionComponent = () => {
     const [groupRole, setGroupRole] = useState<IGroupRole>()
     const {isAuth} = useTypedSelector(state => state.auth)
 
+    const {error, data} = useQuery(QUERY,
+        {variables: {"groupId": Number(groupId), "courseId": Number(courseId)}})
+    console.log(`data: ${data}`)
+
     useEffect(() => {
         async function fetchLessons() {
-            const courseResponse = await CourseService.getCourse(groupId!, courseId!)
-            const lessonsResponse = await LessonService.getLessons(groupId!, courseId!)
-            const groupRole = await GroupService.getGroupRole(groupId!)
-            setLessonsResponse(lessonsResponse)
-            setCourse(courseResponse)
-            setGroupRole(groupRole)
+            setLessonsResponse(data.get_lessons)
+            setCourse(data.get_courses)
+            setGroupRole(data.get_role)
         }
 
-        if (isAuth) {
+        if (isAuth && data) {
             fetchLessons()
                 .then(() => setIsLoading(false))
         }
-    }, [courseId, groupId]);
+    }, [data]);
+
+    if (error) {
+        console.log(`Loading error: ${error}`)
+    }
+
     if (isLoading)
         return <BaseSpinner/>;
     return (

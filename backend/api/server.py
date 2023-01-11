@@ -6,15 +6,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import Task, Solution, User
+from database import Task,  User
 from database.base_meta import initialize_database, get_session
 from models.site.token import Token
 from services.auth_service import create_access_token_user, create_refresh_token_user, \
-    authenticate_user, get_password_hash, get_admin
+    authenticate_user, get_admin
 from api.endpoints import user_router, auth_router, group_router, admin_router,\
     course_router, lesson_router, solution_router, task_router, chat_message_router, stat_router
-from services.solution_service import SolutionService
-from services.user_service import UserService
 
 from api.graphql_endpoints import graphql_router
 
