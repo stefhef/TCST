@@ -7,14 +7,14 @@ import {ICoursePreview} from '../models/ICoursePreview';
 export const CoursePreview: (props: ICoursePreview) => JSX.Element = (props: ICoursePreview) => {
     return (
         <div>
-            <Link to={`${props.linkTo}`}>
-                <BorderShadowBox maxW="sm" padding="1vw">
+            <BorderShadowBox maxW="sm" padding="1vw">
+                <Link to={`${props.linkTo}`}>
                     <Stat>
                         <StatNumber>{props.courseName}</StatNumber>
                         <StatHelpText>{props.groupName}</StatHelpText>
                     </Stat>
-                </BorderShadowBox>
-            </Link>
+                </Link>
+            </BorderShadowBox>
         </div>
     );
 }

@@ -47,7 +47,5 @@ class LessonQuery:
             lessons_dto = list(map(lambda t: LessonDtoWithHiddenFlag(**t.lesson.to_dict(),
                                                                      is_hidden=t.is_hidden),
                                    course_lessons))
-        return LessonsResponse(lessons=lessons_dto,
-                               course_name=course.name,
-                               course_description=course.description)
+        return LessonsResponse(lessons=lessons_dto)
 

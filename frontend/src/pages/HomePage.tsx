@@ -4,81 +4,104 @@ import {BaseSpinner} from "../components/BaseSpinner";
 import {CoursePreview} from "../components/CoursePreview";
 import {ICoursePreview} from "../models/ICoursePreview";
 import {useTypedSelector} from "../hooks/useTypedSelector";
-import GroupService from "../services/GroupService";
-import CourseService from "../services/CourseService";
 import {Layout} from "../components/layouts/Layout";
+import {gql, useQuery} from "@apollo/client";
+import {IHomePageData} from "../models/IHomePageData";
 
 const HomePage: FunctionComponent = () => {
     const [coursePreviews, setCoursePreviews] = useState<ICoursePreview[]>([])
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const {isAuth} = useTypedSelector(state => state.auth)
+
+
+    const HOME_PAGE = gql`query HomePage {
+get_all_courses {
+    courses {
+      course{
+        id,
+        name,
+        description
+      }
+      group {
+        id, 
+        name
+      }
+      }
+    }
+  }`
+
+    const {error, data} = useQuery(HOME_PAGE)
+
+    console.log(`Data: ${data}`)
+
     useEffect(() => {
         async function fetchCourses() {
-            const group_response = await GroupService.getGroups()
-            const courses_data = await Promise.all(group_response.groups.map((group) => CourseService.getCourses(group.id)))
-            const courses = courses_data.map(
-                (course_data, index) => course_data.courses.map(
-                    (course): ICoursePreview => {
-                        return {
-                            linkTo: `group/${course.id}/course/${group_response.groups[index].id}`,
-                            courseId: course.id,
-                            courseName: course.name,
-                            groupName: group_response.groups[index].name,
-                            groupId: group_response.groups[index].id
-                        }
-                    })).flat().sort((a, b) => a.courseId - b.courseId)
+            const courses = data.get_all_courses.courses.map((courses: IHomePageData): ICoursePreview => {
+                    return {
+                        linkTo: `group/${courses.group.id}/course/${courses.course.id}`,
+                        courseId: courses.course.id,
+                        courseName: courses.course.name,
+                        groupName: courses.group.name,
+                        groupId: courses.group.id
+                    }
+                }
+            ).flat().sort((a: ICoursePreview, b: ICoursePreview) => a.courseId - b.courseId)
             setCoursePreviews(courses)
         }
 
-        if (isAuth) {
+        if (isAuth && data) {
             fetchCourses()
                 .then(() => setIsLoading(false))
         }
 
-    }, [isAuth])
+    }, [data])
+
+    if (error) {
+        console.log(`Apollo error: ${error}`);
+    }
 
     if (isLoading) {
         return <BaseSpinner/>;
-    } else {
-        if (coursePreviews.length !== 0) {
-            const previews = coursePreviews.map((v, index) => (
-                <CoursePreview
-                    {...v}
-                    key={index}
-                />
-            ));
-            return isLargerThan768 ? (
-                <Layout
-                    headerChildren={
-                        <Heading>Курсы</Heading>
-                    }
-                    mainChildren={
-                        <SimpleGrid columns={2} spacing={10}>
-                            {previews}
-                        </SimpleGrid>
-                    }
-                />
-            ) : (
-                <div>
-                    <Heading mb={2}>Курсы</Heading>
-                    <SimpleGrid columns={4} spacing={10}>
-                        {previews}
-                    </SimpleGrid>
-                </div>
-            );
-        }
-        return (
+    }
+
+    if (coursePreviews.length !== 0) {
+        const previews = coursePreviews.map((v, index) => (
+            <CoursePreview
+                {...v}
+                key={index}
+            />
+        ));
+        return isLargerThan768 ? (
             <Layout
                 headerChildren={
                     <Heading>Курсы</Heading>
                 }
                 mainChildren={
-                    <Heading>Нет доступных курсов</Heading>
+                    <SimpleGrid columns={2} spacing={10}>
+                        {previews}
+                    </SimpleGrid>
                 }
             />
+        ) : (
+            <div>
+                <Heading mb={2}>Курсы</Heading>
+                <SimpleGrid columns={4} spacing={10}>
+                    {previews}
+                </SimpleGrid>
+            </div>
         );
     }
+    return (
+        <Layout
+            headerChildren={
+                <Heading>Курсы</Heading>
+            }
+            mainChildren={
+                <Heading>Нет доступных курсов</Heading>
+            }
+        />
+    );
 }
 
 export default HomePage;

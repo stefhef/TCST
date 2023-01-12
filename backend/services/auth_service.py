@@ -100,9 +100,6 @@ def create_jwt_token(data: dict,
 
 async def get_current_user(token: str = Depends(oauth2_scheme),
                            session: AsyncSession = Depends(get_session)) -> User:
-    logging.debug(session)
-    print(f"token: {token}")
-    logging.debug(token)
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -124,7 +121,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme),
 
 async def get_current_active_user(current_user: User = Depends(get_current_user),
                                   session: AsyncSession = Depends(get_session)) -> User:
-    logging.info("GET_CURRENT_ACTIVE_USER")
     if current_user.status != UserStatus.ACTIVE:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user")
     return current_user

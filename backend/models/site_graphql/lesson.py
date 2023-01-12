@@ -21,8 +21,7 @@ class LessonsResponseDto(BaseModel):
 
 @strawberry.experimental.pydantic.type(model=LessonsResponseDto, all_fields=True)
 class LessonsResponse:
-    course_name: str
-    course_description: Union[str, None]
+    pass
 
 
 class LessonResponse(LessonGQL):

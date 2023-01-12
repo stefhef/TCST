@@ -32,9 +32,7 @@ const CoursePage: FunctionComponent = () => {
                 id,
                 name,
                 description
-            },
-            course_name,
-            course_description
+            }
         },
         get_courses(group_id: $groupId) {
             courses {
@@ -46,7 +44,7 @@ const CoursePage: FunctionComponent = () => {
         }
     }`
 
-    const {courseId, groupId} = useParams();
+    const {groupId, courseId} = useParams();
     const [lessonsResponse, setLessonsResponse] = useState<ILessonsResponse>()
     const [course, setCourse] = useState<ICourse>()
     const [isLoading, setIsLoading] = useState<boolean>(true)
