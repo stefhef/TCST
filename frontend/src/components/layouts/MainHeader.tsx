@@ -17,15 +17,17 @@ import {useActions} from "../../hooks/useActions";
 import {baseURL, vkClientId} from "../../api/api";
 
 import './MainHeader.css';
+import {client} from "../../apollo";
 
 export const MainHeader: FunctionComponent = () => {
     const {isAuth, user} = useTypedSelector(state => state.auth)
     const {logout} = useActions()
     // console.log(process.env.REACT_APP_DEV_SITE_URL)
+    console.log(`Env mode ${process.env.NODE_ENV}`)
     const {colorMode} = useColorMode()
     return (
-        <div> {/* Но можно div или header оставить*/}
-            <nav className={'header'}> {/* Flex was here */}
+        <div>
+            <nav className={'header'}>
                 <Wrap>
                     <WrapItem>
                         <Center className={'header__link'}>
@@ -45,6 +47,9 @@ export const MainHeader: FunctionComponent = () => {
                 </Wrap>
 
                 <Spacer/>
+                <Flex>
+                    {process.env.NODE_ENV === "development" ? <button onClick={() => client.resetStore()}>Очистить кэш Apollo </button> : <></>}
+                </Flex>
                 <Flex>
                     {isAuth
                         ?

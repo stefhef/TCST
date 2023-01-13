@@ -76,10 +76,8 @@ export const updateAccessToken = async () => {
     await axios(axiosRefreshTokenRequestConfig)
         .then(async (refresh_token_response) => {
             const login_data: IAuthLogin = refresh_token_response.data
-            console.log(login_data)
             store.dispatch(AuthActionCreators.setLogin(login_data))
             localStorage.setItem("access_token", decodeLocal(login_data.access_token))
-            return login_data.access_token
         })
         .catch(async () => {
             await AuthActionCreators.logout()(store.dispatch)
