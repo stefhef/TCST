@@ -10,6 +10,7 @@ from services.auth_service import get_current_active_user
 from .course import CourseQuery
 from .lesson import LessonQuery
 from .group import GroupQuery
+from .task import TaskQuery
 
 import pickle
 
@@ -30,7 +31,7 @@ async def get_context(
 
 
 @strawberry.type
-class Query(CourseQuery, LessonQuery, GroupQuery):
+class Query(CourseQuery, LessonQuery, GroupQuery, TaskQuery):
     """Query"""
 
 

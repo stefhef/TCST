@@ -11,14 +11,15 @@ from services.courses_lessons_service import CoursesLessonsService
 from services.groups_courses_serivce import GroupsCoursesService
 from services.users_groups_service import UsersGroupsService
 
-from models.site_graphql.lesson import LessonsResponse
+from models.site_graphql.lesson import LessonsResponse, LessonResponse
 
 
 @strawberry.type(name="Query", extend=True)
 class LessonQuery:
 
     @strawberry.field
-    async def get_lessons(self, info: Info, group_id: int,
+    async def get_lessons(self, info: Info,
+                          group_id: int,
                           course_id: int) -> LessonsResponse:
         current_user = info.context["current_user"]
         session = info.context["session"]
@@ -49,3 +50,32 @@ class LessonQuery:
                                    course_lessons))
         return LessonsResponse(lessons=lessons_dto)
 
+    @strawberry.field
+    async def get_lesson(self, info: Info,
+                         group_id: int,
+                         course_id: int,
+                         lesson_id: int) -> LessonResponse:
+        current_user = info.context["current_user"]
+        session = info.context["session"]
+
+        user_group = await UsersGroupsService.get_user_group(current_user.id,
+                                                             group_id,
+                                                             session)
+        if not user_group:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Bad access to group")
+
+        group_course = await GroupsCoursesService.get_group_course(group_id,
+                                                                   course_id,
+                                                                   session)
+        if not group_course:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Bad access to course")
+
+        course_lesson = await CoursesLessonsService.get_course_lesson_with_lesson(course_id,
+                                                                                  lesson_id,
+                                                                                  session)
+        lesson = course_lesson.lesson
+        return LessonResponse(id=lesson.id, description=lesson.description, name=lesson.name)

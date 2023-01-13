@@ -1,15 +1,17 @@
 from enum import IntEnum
 
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Enum
+import strawberry
+from sqlalchemy import Column, Integer, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 
 from database.base_meta import BaseSQLAlchemyModel
 
 
+@strawberry.enum
 class TaskType(IntEnum):
-    CLASS_WORK = 1
-    HOME_WORK = 2
-    ADDITIONAL_WORK = 3
+    CLASS_WORK: int = 1
+    HOME_WORK: int = 2
+    ADDITIONAL_WORK: int = 3
 
 
 class LessonsTasks(BaseSQLAlchemyModel):

@@ -21,5 +21,5 @@ export interface ITask {
     description: string | null;
     max_score: number;
     attachments: IAttachmentTask[];
-    task_type: ITaskType
+    task_type: string
 }

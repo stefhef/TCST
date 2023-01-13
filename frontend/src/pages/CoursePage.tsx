@@ -53,7 +53,6 @@ const CoursePage: FunctionComponent = () => {
 
     const {error, data} = useQuery(QUERY,
         {variables: {"groupId": Number(groupId), "courseId": Number(courseId)}})
-    console.log(`data: ${data}`)
 
     useEffect(() => {
         async function fetchLessons() {

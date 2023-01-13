@@ -23,7 +23,6 @@ export const MainHeader: FunctionComponent = () => {
     const {isAuth, user} = useTypedSelector(state => state.auth)
     const {logout} = useActions()
     // console.log(process.env.REACT_APP_DEV_SITE_URL)
-    console.log(`Env mode ${process.env.NODE_ENV}`)
     const {colorMode} = useColorMode()
     return (
         <div>
