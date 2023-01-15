@@ -1,7 +1,7 @@
-import {setContext} from "@apollo/client/link/context";
 import {ApolloClient, createHttpLink, from, InMemoryCache} from "@apollo/client";
-import {updateAccessToken} from "../api/api";
+import {setContext} from "@apollo/client/link/context";
 import {RetryLink} from "@apollo/client/link/retry";
+import {updateAccessToken} from "../api/api";
 
 const authLink = setContext((_, {headers}) => {
     const token = localStorage.getItem('access_token');
@@ -42,6 +42,7 @@ const retryLink = new RetryLink({
 export const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: from([retryLink, authLink, httpLink]),
+    connectToDevTools: true,
     defaultOptions: {
         watchQuery: {
             fetchPolicy: 'cache-and-network'

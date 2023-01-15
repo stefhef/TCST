@@ -1,29 +1,30 @@
-from typing import List, Union
-from pydantic import BaseModel
+from typing import List
 from models.pydantic_sqlalchemy_core import LessonDto
 
 import strawberry
-from strawberry.experimental.pydantic import type
 
 
-@type(model=LessonDto, all_fields=True)
+@strawberry.experimental.pydantic.type(model=LessonDto, all_fields=True)
 class LessonGQL:
     pass
 
 
-class LessonDtoWithHiddenFlag(LessonDto):
+@strawberry.type
+class LessonGQLWithHiddenFlag(LessonGQL):
     is_hidden: bool
 
 
-class LessonsResponseDto(BaseModel):
-    lessons: Union[List[LessonDtoWithHiddenFlag], List[LessonDto]]
-
-
-@strawberry.experimental.pydantic.type(model=LessonsResponseDto, all_fields=True)
+@strawberry.type
 class LessonsResponse:
-    pass
+    lessons: List[LessonGQL]
 
 
+@strawberry.type
+class LessonsResponseWithFlag:
+    lessons: List[LessonGQLWithHiddenFlag]
+
+
+@strawberry.type
 class LessonResponse(LessonGQL):
     pass
 
@@ -32,7 +33,7 @@ class LessonRequest(LessonGQL):
     pass
 
 
-@type(model=LessonDto)
+@strawberry.experimental.pydantic.type(model=LessonDto)
 class LessonPostRequest:
     name: strawberry.auto
     description: strawberry.auto

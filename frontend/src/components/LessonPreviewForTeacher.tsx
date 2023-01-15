@@ -1,43 +1,46 @@
-import {Link} from 'react-router-dom';
-
-import {HStack, IconButton, Progress, Spacer, Text, VStack} from '@chakra-ui/react';
-import {ILessonPreview} from "../models/ILessonPreview";
-import {BorderShadowBox} from "./BorderShadowBox";
 import React, {useEffect, useState} from "react";
-import {LessonPreviewTaskInfoForStudent} from "./LessonPreviewTaskInfoForStudent";
-import {AiOutlineEye, AiOutlineEyeInvisible, MdKeyboardArrowDown, MdKeyboardArrowUp} from 'react-icons/all';
-import {IStatusTaskColor} from "../models/IStatusTaskColor";
-import {ITaskCountForStudentResponse} from "../models/ITaskCountForStudentResponse";
-import TaskService from "../services/TaskService";
-import {IGroupRole} from "../models/IGroupRole";
+import {Link} from 'react-router-dom';
+import {HStack, IconButton, Progress, Spacer, Text, VStack} from '@chakra-ui/react';
+import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/all';
+import {ILessonPreview} from "../models/ILessonPreview";
 import {ITaskCountForTeacherResponse} from "../models/ITaskCountForTeacherResponse";
-import CourseService from "../services/CourseService";
+import {BorderShadowBox} from "./BorderShadowBox";
+import {LessonPreviewTaskInfoForStudent} from "./LessonPreviewTaskInfoForStudent";
+import {useMutation, useQuery} from "@apollo/client";
+import GET_TASK_COUNT_FOR_TEACHER from "../request/GET_TASK_COUNT_FOR_TEACHER";
 
 import "./LessonPreview.css";
+import CHANGE_VISIBLE from "../mutation/CHANGE_VISIBLE";
+import GET_LESSONS_COURSE_ROLE from "../request/GET_LESSONS_COURSE_ROLE";
 
 export const LessonPreviewForTeacher: (props: ILessonPreview) => JSX.Element = (props: ILessonPreview) => {
-    const [statusTaskColor, setStatusTaskColor] = useState<IStatusTaskColor>()
     const [openTasksInfo, setOpenTasksInfo] = useState<boolean>(false)
     const [taskCountForTeacher, setTaskCountForTeacher] = useState<ITaskCountForTeacherResponse>()
 
-    useEffect(() => {
-        TaskService.getCountForTeacher(props.groupId, props.courseId, props.lessonId).then((taskCount) => {
-            setTaskCountForTeacher(taskCount)
-        })
+    const {data: response, error} = useQuery(GET_TASK_COUNT_FOR_TEACHER,
+        {variables: {"groupId": Number(props.groupId), "courseId": Number(props.courseId), "lessonId": Number(props.lessonId)}})
 
-    }, [])
-    async function onClickHideButton() {
-        await CourseService.changeVisibility(props.groupId, props.courseId, props.lessonId, !props.is_hidden)
+    if (error) {
+        console.log(`Apollo error: ${error}`)
     }
+
+    useEffect(() => {
+        if (response) {
+            setTaskCountForTeacher(response.get_task_count_for_teacher)
+        }
+    }, [response])
+
+    const [onClickHideButton] = useMutation(CHANGE_VISIBLE, {
+        refetchQueries: [
+            {query: GET_LESSONS_COURSE_ROLE, variables: {"courseId": Number(props.courseId), "groupId": Number(props.courseId)}}
+        ]});
 
     return (
         <VStack alignSelf={"left"} mb={4}>
             <BorderShadowBox padding="0.5vw" width={"100%"}>
                 <HStack>
                     <HStack as={Link} to={`lesson/${props.lessonId}`} style={{width: "100%"}}>
-                        <Text
-                            className={"lesson-preview__text"}
-                        >
+                        <Text className={"lesson-preview__text"}>
                             {props.name}
                         </Text>
                         <Spacer/>
@@ -59,7 +62,12 @@ export const LessonPreviewForTeacher: (props: ILessonPreview) => JSX.Element = (
                     */}
                     <IconButton aria-label={"Show/Hide Lesson"}
                                 icon={props.is_hidden ? <AiOutlineEyeInvisible/> : <AiOutlineEye/>}
-                                onClick={onClickHideButton}
+                                onClick={() => onClickHideButton({variables:
+                                        {"groupId": Number(props.groupId),
+                                        "courseId": Number(props.courseId),
+                                        "lessonId": Number(props.lessonId),
+                                        "isHidden": !props.is_hidden
+                                        }})}
                                 bg={"transparent"}
                                 border={"1px"}
                                 _hover={{"background": "transparent"}}

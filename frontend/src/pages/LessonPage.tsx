@@ -12,17 +12,17 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 
-
 import {BaseSpinner} from "../components/BaseSpinner";
-import {ITasksResponse} from "../models/ITasksResponse";
-import {ILesson} from "../models/ILesson";
-import {IGroupRole} from "../models/IGroupRole";
 import {Layout} from "../components/layouts/Layout";
 import {TaskPreviewStudent} from "../components/TaskPreviewStudent";
 import {TaskPreviewTeacher} from "../components/TaskPreviewTeacher";
-import {useQuery} from "@apollo/client";
-import GET_LESSON_WITH_TASKS from "../request/GetLessonTask";
+import {ITasksResponse} from "../models/ITasksResponse";
+import {ILesson} from "../models/ILesson";
+import {IGroupRole} from "../models/IGroupRole";
 import {ITaskType} from "../models/ITask";
+import {useQuery} from "@apollo/client";
+import GET_LESSON_WITH_TASKS from "../request/GET_LESSON_WITH_TASKS";
+
 
 
 const LessonPage: FunctionComponent = () => {
@@ -40,17 +40,11 @@ const LessonPage: FunctionComponent = () => {
 	}
 
 	useEffect(() => {
-		async function fetchTasks() {
-			setTasksResponse(data.get_all_tasks)
-			setLesson(data.get_lesson)
-			setGroupRole(data.get_role)
-		}
-
 		if (data) {
-			fetchTasks()
-			.then(() => {
-				setIsLoading(false)
-				})
+			setTasksResponse(data.get_all_tasks);
+			setLesson(data.get_lesson);
+			setGroupRole(data.get_role);
+			setIsLoading(false);
 		}
 	}, [loading])
 

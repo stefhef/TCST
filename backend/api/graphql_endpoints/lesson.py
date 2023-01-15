@@ -1,17 +1,20 @@
-import strawberry
+from typing import Union
+
 from fastapi import HTTPException
 from starlette import status
+
+import strawberry
 from strawberry.types import Info
 
 from database.users_groups import UserGroupRole
 from models.pydantic_sqlalchemy_core import LessonDto
 from models.site.lesson import LessonDtoWithHiddenFlag
+from models.site_graphql.lesson import LessonsResponse, LessonResponse, LessonsResponseWithFlag
+
 from services.course_service import CourseService
 from services.courses_lessons_service import CoursesLessonsService
 from services.groups_courses_serivce import GroupsCoursesService
 from services.users_groups_service import UsersGroupsService
-
-from models.site_graphql.lesson import LessonsResponse, LessonResponse
 
 
 @strawberry.type(name="Query", extend=True)
@@ -20,7 +23,7 @@ class LessonQuery:
     @strawberry.field
     async def get_lessons(self, info: Info,
                           group_id: int,
-                          course_id: int) -> LessonsResponse:
+                          course_id: int) -> Union[LessonsResponseWithFlag, LessonsResponse]:
         current_user = info.context["current_user"]
         session = info.context["session"]
 
@@ -42,13 +45,13 @@ class LessonQuery:
         course = await CourseService.get_course(course_id, session)
         course_lessons = await CoursesLessonsService.get_course_lessons(course_id, session)
         if user_group.role == UserGroupRole.STUDENT:
-            lessons_dto = list(map(lambda t: LessonDto.from_orm(t.lesson),
-                                   filter(lambda c_l: not c_l.is_hidden, course_lessons)))
-        else:
-            lessons_dto = list(map(lambda t: LessonDtoWithHiddenFlag(**t.lesson.to_dict(),
-                                                                     is_hidden=t.is_hidden),
-                                   course_lessons))
-        return LessonsResponse(lessons=lessons_dto)
+            return LessonsResponse(lessons=list(map(lambda t: LessonDto.from_orm(t.lesson),
+                                                    filter(lambda c_l: not c_l.is_hidden,
+                                                           course_lessons))))
+
+        return LessonsResponseWithFlag(lessons=list(
+            map(lambda t: LessonDtoWithHiddenFlag(**t.lesson.to_dict(), is_hidden=t.is_hidden),
+                course_lessons)))
 
     @strawberry.field
     async def get_lesson(self, info: Info,

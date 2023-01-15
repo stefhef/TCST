@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
-import {useActions} from "../hooks/useActions";
 import {useNavigate} from "react-router-dom";
+import {useActions} from "../hooks/useActions";
 import {BaseSpinner} from "../components/BaseSpinner";
+import {sleep} from "../api/Common";
 
 export default function RedirectPage() {
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function RedirectPage() {
     const {login} = useActions()
     useEffect(() => {
         login(code);
-        setTimeout(() => navigate("/"), 1000)
+        sleep(1000).then(() => navigate('/'))
     }, [])
     return <BaseSpinner />;
 }

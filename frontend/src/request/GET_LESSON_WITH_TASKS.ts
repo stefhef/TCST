@@ -1,6 +1,7 @@
 import {gql} from "@apollo/client";
 
-const GET_LESSON_WITH_TASKS = gql`query GET_LESSON_WITH_TASK($groupId: Int!, $courseId: Int!, $lessonId: Int!) {
+const GET_LESSON_WITH_TASKS = gql`
+query GET_LESSON_WITH_TASK($groupId: Int!, $courseId: Int!, $lessonId: Int!) {
   get_lesson(group_id: $groupId, course_id: $courseId, lesson_id: $lessonId) {
     id
     name

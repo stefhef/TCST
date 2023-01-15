@@ -1,15 +1,11 @@
-from typing import Optional, List
-
 from fastapi import APIRouter, status, HTTPException, Depends
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
 
-from database.users_groups import UserGroupRole, UsersGroups
+from sqlalchemy.ext.asyncio import AsyncSession
+from database import User, get_session
 from models.pydantic_sqlalchemy_core import CourseDto, CoursesLessonsDto
 from models.site.course import CoursesResponse, CourseResponse, CoursePutRequest
+
 from services.auth_service import get_current_active_user, get_admin, get_teacher_or_admin
-from database import User, Course, Group, get_session, GroupsCourses
 from services.course_service import CourseService
 from services.courses_lessons_service import CoursesLessonsService
 from services.groups_courses_serivce import GroupsCoursesService
@@ -84,10 +80,22 @@ async def change_visibility(group_id: int,
     user_group = await UsersGroupsService.get_user_group(current_user.id,
                                                          group_id,
                                                          session)
-    # TODO check access
+    if not user_group:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to group")
     course_group = await GroupsCoursesService.get_group_course(group_id, course_id, session)
-    # ..
+    if not course_group:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to group")
+
     course_lesson = await CoursesLessonsService.get_course_lesson(course_id, lesson_id, session)
+    if not course_lesson:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to lesson")
+
     course_lesson.is_hidden = is_hidden
     await session.commit()
     return CoursesLessonsDto.from_orm(course_lesson)

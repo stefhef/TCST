@@ -2,12 +2,12 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Heading, SimpleGrid, useMediaQuery} from "@chakra-ui/react";
 import {BaseSpinner} from "../components/BaseSpinner";
 import {CoursePreview} from "../components/CoursePreview";
-import {ICoursePreview} from "../models/ICoursePreview";
-import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Layout} from "../components/layouts/Layout";
-import {useQuery} from "@apollo/client";
+import {ICoursePreview} from "../models/ICoursePreview";
 import {IHomePageData} from "../models/IHomePageData";
-import ALL_COURSE from "../request/GetAllCourses";
+import {useTypedSelector} from "../hooks/useTypedSelector";
+import {useQuery} from "@apollo/client";
+import ALL_COURSE from "../request/GET_ALL_COURSE";
 
 const HomePage: FunctionComponent = () => {
     const [coursePreviews, setCoursePreviews] = useState<ICoursePreview[]>([])
@@ -22,7 +22,7 @@ const HomePage: FunctionComponent = () => {
     }
 
     useEffect(() => {
-        async function fetchCourses() {
+        if (isAuth && data) {
             const courses = data.get_all_courses.courses.map((courses: IHomePageData): ICoursePreview => {
                     return {
                         linkTo: `group/${courses.group.id}/course/${courses.course.id}`,
@@ -34,11 +34,7 @@ const HomePage: FunctionComponent = () => {
                 }
             ).flat().sort((a: ICoursePreview, b: ICoursePreview) => a.courseId - b.courseId)
             setCoursePreviews(courses)
-        }
-
-        if (isAuth && data) {
-            fetchCourses()
-                .then(() => setIsLoading(false))
+            setIsLoading(false)
         }
 
     }, [loading])

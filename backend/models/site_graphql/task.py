@@ -35,3 +35,19 @@ class TasksResponse:
 @strawberry.type
 class TaskResponse:
     task: TaskGQL
+
+
+@strawberry.type
+class TaskCountForStudentResponse:
+    tasks_count: int
+    tasks_complete_count: int
+    tasks_complete_not_max_count: int
+    tasks_complete_error_count: int
+    tasks_complete_on_review_count: int
+    tasks_undefined_count: int
+
+
+@strawberry.type
+class TaskCountForTeacherResponse:
+    students_count: int
+    students_with_all_completed_tasks: int

@@ -1,20 +1,18 @@
 from io import BytesIO
-from typing import Optional, List, Union
+from typing import Union
 
 from fastapi import APIRouter, status, HTTPException, Depends, UploadFile, File
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
 from starlette.responses import StreamingResponse
 
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from database import User, get_session, Image
 from database.solution import SolutionStatus
-from database.users_groups import UserGroupRole, UsersGroups
 from models.pydantic_sqlalchemy_core import TaskDto
-from models.site.group import GroupsResponse
-from models.site.task import TasksResponse, TaskCountForStudentResponse, TaskCountForTeacherResponse, TasksPostRequest
+from models.site.task import TasksResponse, TaskCountForStudentResponse, \
+    TaskCountForTeacherResponse, TasksPostRequest
+
 from services.auth_service import get_current_active_user, get_admin, get_teacher_or_admin
-from database import User, Group, get_session, GroupsCourses, CoursesLessons, Lesson, LessonsTasks, \
-    Solution, Image, ChatMessage
 from services.courses_lessons_service import CoursesLessonsService
 from services.groups_courses_serivce import GroupsCoursesService
 from services.lessons_tasks_service import LessonsTasksService
@@ -57,7 +55,8 @@ async def get_tasks(group_id: int,
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Bad access to lesson")
     lesson_tasks = await LessonsTasksService.get_lesson_tasks(lesson_id, session)
-    tasks_dto = list(map(lambda t: TaskDto(**t.task.to_dict(), task_type=t.task_type), lesson_tasks))
+    tasks_dto = list(
+        map(lambda t: TaskDto(**t.task.to_dict(), task_type=t.task_type), lesson_tasks))
     return TasksResponse(tasks=tasks_dto)
 
 
@@ -90,11 +89,13 @@ async def get_task(group_id: int,
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Bad access to lesson")
+
     lesson_task = await LessonsTasksService.get_lesson_task(lesson_id, task_id, session)
     if not lesson_task:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Bad access to task")
+
     task = await TaskService.get_task_by_id(lesson_task.task_id, session)
     task_dto = TaskDto.from_orm(task)
     return task_dto
@@ -103,8 +104,9 @@ async def get_task(group_id: int,
 @router.put("/")
 async def put_tasks(tasks_json: TasksPostRequest,
                     current_user: User = Depends(get_admin),
-                    session: AsyncSession = Depends(get_session),):
+                    session: AsyncSession = Depends(get_session), ):
     await TaskService.create_tasks_by_json(tasks_json.tasks, session)
+
 
 @router.post("/upload_image")
 async def upload_image(file: UploadFile = File(...),
@@ -137,10 +139,22 @@ async def get_task_count(group_id: int,
     user_group = await UsersGroupsService.get_user_group(current_user.id,
                                                          group_id,
                                                          session)
-    # TODO check access
+    if not user_group:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to group")
+
     course_group = await GroupsCoursesService.get_group_course(group_id, course_id, session)
-    # ..
+    if not course_group:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to group")
+
     course_lesson = await CoursesLessonsService.get_course_lesson(course_id, lesson_id, session)
+    if not course_lesson:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to lesson")
 
     tasks = await TaskService.get_tasks_by_lesson_id(lesson_id, session)
     tasks_complete_count = 0
@@ -185,10 +199,22 @@ async def get_task_count_for_teacher(group_id: int,
     user_group = await UsersGroupsService.get_user_group(current_user.id,
                                                          group_id,
                                                          session)
-    # TODO check access
+    if not user_group:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to group")
+
     course_group = await GroupsCoursesService.get_group_course(group_id, course_id, session)
-    # ..
+    if not course_group:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to group")
+
     course_lesson = await CoursesLessonsService.get_course_lesson(course_id, lesson_id, session)
+    if not course_lesson:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Bad access to lesson")
 
     tasks = await TaskService.get_tasks_by_lesson_id(lesson_id, session)
     group_students = await UsersGroupsService.get_group_students(group_id, session)
@@ -220,4 +246,3 @@ async def get_task_count_for_teacher(group_id: int,
 
     return TaskCountForTeacherResponse(students_count=students_count,
                                        students_with_all_completed_tasks=students_with_all_completed_tasks)
-

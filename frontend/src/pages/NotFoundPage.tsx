@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 
 import {
     Box,
     Button,
     Heading,
-    Link,
     Modal,
     ModalBody,
     ModalContent,

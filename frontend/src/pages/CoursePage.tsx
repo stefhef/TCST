@@ -14,18 +14,16 @@ import {
 
 import {BaseSpinner} from "../components/BaseSpinner";
 import {LessonPreviewForStudent} from "../components/LessonPreviewForStudent";
+import {Layout} from "../components/layouts/Layout";
+import {LessonPreviewForTeacher} from "../components/LessonPreviewForTeacher";
 import {ILessonsResponse} from "../models/ILessonsResponse";
 import {ICourse} from "../models/ICourse";
 import {IGroupRole} from "../models/IGroupRole";
 import {useTypedSelector} from "../hooks/useTypedSelector";
-import {Layout} from "../components/layouts/Layout";
-import {LessonPreviewForTeacher} from "../components/LessonPreviewForTeacher";
 import {useQuery} from "@apollo/client";
-import GET_LESSONS_COURSES_ROLE from '../request/GetLessonsCoursesRole';
+import GET_LESSONS_COURSE_ROLE from '../request/GET_LESSONS_COURSE_ROLE';
 
 const CoursePage: FunctionComponent = () => {
-
-
 
     const {groupId, courseId} = useParams();
     const [lessonsResponse, setLessonsResponse] = useState<ILessonsResponse>()
@@ -34,7 +32,7 @@ const CoursePage: FunctionComponent = () => {
     const [groupRole, setGroupRole] = useState<IGroupRole>()
     const {isAuth} = useTypedSelector(state => state.auth)
 
-    const {error, data, loading} = useQuery(GET_LESSONS_COURSES_ROLE,
+    const {error, data, loading} = useQuery(GET_LESSONS_COURSE_ROLE,
         {variables: {"groupId": Number(groupId), "courseId": Number(courseId)}})
 
     if (error) {
@@ -42,17 +40,14 @@ const CoursePage: FunctionComponent = () => {
     }
 
     useEffect(() => {
-        async function fetchLessons() {
-            setLessonsResponse(data.get_lessons)
-            setCourse(data.get_courses)
-            setGroupRole(data.get_role)
-        }
-
         if (isAuth && data) {
-            fetchLessons()
-                .then(() => setIsLoading(false))
+            setLessonsResponse(data.get_lessons)
+            setCourse(data.get_course)
+            setGroupRole(data.get_role)
+            setIsLoading(false)
         }
-    }, [loading]);
+    }, [loading, data, isAuth]);
+
 
     if (isLoading)
         return <BaseSpinner/>;

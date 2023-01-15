@@ -18,7 +18,7 @@ import {useParams} from "react-router";
 import {getTaskStatusColorScheme} from '../common/colors';
 import {IStatusTaskColor} from "../models/IStatusTaskColor";
 import {useQuery} from "@apollo/client";
-import GET_SOLUTION_BEST from "../request/GetSolutionBest";
+import GET_SOLUTION_BEST from "../request/GET_SOLUTION_BEST";
 
 
 export const TaskPreviewStudent: (props: ITaskPreviewStudent) => JSX.Element = (props: ITaskPreviewStudent) => {
@@ -35,13 +35,10 @@ export const TaskPreviewStudent: (props: ITaskPreviewStudent) => JSX.Element = (
     }
 
     useEffect(() => {
-        async function fetchSolution() {
+        if (data) {
             setSolution(data.get_solution_best)
             setStatus(getTaskStatusColorScheme(solution?.status))
-        }
-
-        if (data) {
-            fetchSolution().then(() => setIsLoaded(true))
+            setIsLoaded(true)
         }
     }, [loading])
 

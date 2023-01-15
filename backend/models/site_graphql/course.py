@@ -1,5 +1,7 @@
 from typing import List
+
 import strawberry
+
 from pydantic import BaseModel
 from models.pydantic_sqlalchemy_core import CourseDto
 from models.site_graphql.group import GroupGQL
@@ -7,6 +9,11 @@ from models.site_graphql.group import GroupGQL
 
 @strawberry.experimental.pydantic.type(model=CourseDto, all_fields=True)
 class CourseGQL:
+    pass
+
+
+@strawberry.type
+class CourseResponse(CourseGQL):
     pass
 
 

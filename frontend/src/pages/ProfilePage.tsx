@@ -5,9 +5,11 @@ import {CoursePreview} from "../components/CoursePreview";
 import {ICoursePreview} from "../models/ICoursePreview";
 import {IHomePageData} from "../models/IHomePageData";
 import {useQuery} from "@apollo/client";
-import ALL_COURSE from "../request/GetAllCourses";
+import ALL_COURSE from "../request/GET_ALL_COURSE";
 
 import './ProfilePage.css';
+
+
 const ProfilePage: FunctionComponent = () => {
     const [coursePreviews, setCoursePreviews] = useState<ICoursePreview[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -18,24 +20,20 @@ const ProfilePage: FunctionComponent = () => {
         console.log(`Apollo error: ${error}`);
     }
 
-    async function fetchCourses() {
-        const courses = data.get_all_courses.courses.map((courses: IHomePageData): ICoursePreview => {
-                return {
-                    linkTo: `group/${courses.group.id}/course/${courses.course.id}`,
-                    courseId: courses.course.id,
-                    courseName: courses.course.name,
-                    groupName: courses.group.name,
-                    groupId: courses.group.id
-                }
-            }
-        ).flat().sort((a: ICoursePreview, b: ICoursePreview) => a.courseId - b.courseId)
-        setCoursePreviews(courses)
-    }
-
     useEffect(() => {
         if (data) {
-            fetchCourses()
-                .then(() => setIsLoading(false))
+            const courses = data.get_all_courses.courses.map((courses: IHomePageData): ICoursePreview => {
+                    return {
+                        linkTo: `group/${courses.group.id}/course/${courses.course.id}`,
+                        courseId: courses.course.id,
+                        courseName: courses.course.name,
+                        groupName: courses.group.name,
+                        groupId: courses.group.id
+                    }
+                }
+            ).flat().sort((a: ICoursePreview, b: ICoursePreview) => a.courseId - b.courseId);
+            setCoursePreviews(courses);
+            setIsLoading(false);
         }
 
     }, [loading])
