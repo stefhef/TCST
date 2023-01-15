@@ -1,13 +1,14 @@
 from datetime import datetime
 from enum import IntEnum
 
+import strawberry
 from sqlalchemy import Column, Integer, String, Float, ForeignKeyConstraint, Boolean, Enum, \
     DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
 from database.base_meta import BaseSQLAlchemyModel
 
-
+@strawberry.enum
 class SolutionStatus(IntEnum):
     NOT_SENT: int = -2
     ERROR: int = -1

@@ -5,8 +5,9 @@ import {CoursePreview} from "../components/CoursePreview";
 import {ICoursePreview} from "../models/ICoursePreview";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Layout} from "../components/layouts/Layout";
-import {gql, useQuery} from "@apollo/client";
+import {useQuery} from "@apollo/client";
 import {IHomePageData} from "../models/IHomePageData";
+import ALL_COURSE from "../request/GetAllCourses";
 
 const HomePage: FunctionComponent = () => {
     const [coursePreviews, setCoursePreviews] = useState<ICoursePreview[]>([])
@@ -14,26 +15,11 @@ const HomePage: FunctionComponent = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const {isAuth} = useTypedSelector(state => state.auth)
 
+    const {error, data, loading} = useQuery(ALL_COURSE)
 
-    const HOME_PAGE = gql`query HomePage {
-get_all_courses {
-    courses {
-      course{
-        id,
-        name,
-        description
-      }
-      group {
-        id, 
-        name
-      }
-      }
+    if (error) {
+        console.log(`Apollo error: ${error}`);
     }
-  }`
-
-    const {error, data} = useQuery(HOME_PAGE)
-
-    console.log(`Data: ${data}`)
 
     useEffect(() => {
         async function fetchCourses() {
@@ -55,11 +41,7 @@ get_all_courses {
                 .then(() => setIsLoading(false))
         }
 
-    }, [data])
-
-    if (error) {
-        console.log(`Apollo error: ${error}`);
-    }
+    }, [loading])
 
     if (isLoading) {
         return <BaseSpinner/>;

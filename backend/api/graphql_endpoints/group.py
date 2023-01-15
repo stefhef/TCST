@@ -13,7 +13,7 @@ from services.users_groups_service import UsersGroupsService
 class GroupQuery:
 
     @strawberry.field
-    async def get_role(self, info: Info, group_id: int) -> UserGroupRole:
+    async def get_role(self, info: Info, group_id: int) -> int:
         current_user = info.context["current_user"]
         session = info.context["session"]
         user_group = await UsersGroupsService.get_user_group(current_user.id,

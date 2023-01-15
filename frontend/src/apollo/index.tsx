@@ -5,7 +5,6 @@ import {RetryLink} from "@apollo/client/link/retry";
 
 const authLink = setContext((_, {headers}) => {
     const token = localStorage.getItem('access_token');
-    console.log(`Token: ${token}`)
     return {
         headers: {
             ...headers,
@@ -42,5 +41,10 @@ const retryLink = new RetryLink({
 
 export const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: from([retryLink, authLink, httpLink])
+    link: from([retryLink, authLink, httpLink]),
+    defaultOptions: {
+        watchQuery: {
+            fetchPolicy: 'cache-and-network'
+        }
+    },
 });

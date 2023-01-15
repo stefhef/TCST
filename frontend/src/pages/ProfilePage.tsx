@@ -1,39 +1,44 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {Heading, SimpleGrid, useMediaQuery} from "@chakra-ui/react";
+import {Heading, SimpleGrid} from "@chakra-ui/react";
 import {BaseSpinner} from "../components/BaseSpinner";
 import {CoursePreview} from "../components/CoursePreview";
 import {ICoursePreview} from "../models/ICoursePreview";
-import {useTypedSelector} from "../hooks/useTypedSelector";
-import GroupService from "../services/GroupService";
-import CourseService from "../services/CourseService";
+import {IHomePageData} from "../models/IHomePageData";
+import {useQuery} from "@apollo/client";
+import ALL_COURSE from "../request/GetAllCourses";
 
 import './ProfilePage.css';
-
 const ProfilePage: FunctionComponent = () => {
     const [coursePreviews, setCoursePreviews] = useState<ICoursePreview[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
+    const {error, data, loading} = useQuery(ALL_COURSE)
+
+    if (error) {
+        console.log(`Apollo error: ${error}`);
+    }
+
     async function fetchCourses() {
-        const group_response = await GroupService.getGroups()
-        const courses_data = await Promise.all(group_response.groups.map((group) => CourseService.getCourses(group.id)))
-        const courses = courses_data.map(
-            (course_data, index) => course_data.courses.map(
-                (course): ICoursePreview => {
-                    return {
-                        linkTo: `group/${course.id}/course/${group_response.groups[index].id}`,
-                        courseId: course.id,
-                        courseName: course.name,
-                        groupName: group_response.groups[index].name,
-                        groupId: group_response.groups[index].id
-                    }
-                })).flat().sort((a, b) => a.courseId - b.courseId)
+        const courses = data.get_all_courses.courses.map((courses: IHomePageData): ICoursePreview => {
+                return {
+                    linkTo: `group/${courses.group.id}/course/${courses.course.id}`,
+                    courseId: courses.course.id,
+                    courseName: courses.course.name,
+                    groupName: courses.group.name,
+                    groupId: courses.group.id
+                }
+            }
+        ).flat().sort((a: ICoursePreview, b: ICoursePreview) => a.courseId - b.courseId)
         setCoursePreviews(courses)
     }
 
     useEffect(() => {
-        fetchCourses()
-            .then(() => setIsLoading(false))
-    }, [])
+        if (data) {
+            fetchCourses()
+                .then(() => setIsLoading(false))
+        }
+
+    }, [loading])
 
     if (isLoading) {
         return <BaseSpinner/>;

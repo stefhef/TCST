@@ -20,29 +20,12 @@ import {IGroupRole} from "../models/IGroupRole";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Layout} from "../components/layouts/Layout";
 import {LessonPreviewForTeacher} from "../components/LessonPreviewForTeacher";
-import {gql, useQuery} from "@apollo/client";
-
+import {useQuery} from "@apollo/client";
+import GET_LESSONS_COURSES_ROLE from '../request/GetLessonsCoursesRole';
 
 const CoursePage: FunctionComponent = () => {
 
-    const QUERY = gql`query All($courseId: Int!, $groupId: Int!) {
-        get_role(group_id: $groupId),
-        get_lessons(group_id: $groupId, course_id: $courseId) {
-            lessons {
-                id,
-                name,
-                description
-            }
-        },
-        get_courses(group_id: $groupId) {
-            courses {
-                id,
-                name,
-                description,
 
-            }
-        }
-    }`
 
     const {groupId, courseId} = useParams();
     const [lessonsResponse, setLessonsResponse] = useState<ILessonsResponse>()
@@ -51,8 +34,12 @@ const CoursePage: FunctionComponent = () => {
     const [groupRole, setGroupRole] = useState<IGroupRole>()
     const {isAuth} = useTypedSelector(state => state.auth)
 
-    const {error, data} = useQuery(QUERY,
+    const {error, data, loading} = useQuery(GET_LESSONS_COURSES_ROLE,
         {variables: {"groupId": Number(groupId), "courseId": Number(courseId)}})
+
+    if (error) {
+        console.log(`Apollo error: ${error}`);
+    }
 
     useEffect(() => {
         async function fetchLessons() {
@@ -65,11 +52,7 @@ const CoursePage: FunctionComponent = () => {
             fetchLessons()
                 .then(() => setIsLoading(false))
         }
-    }, [data]);
-
-    if (error) {
-        console.log(`Loading error: ${error}`)
-    }
+    }, [loading]);
 
     if (isLoading)
         return <BaseSpinner/>;

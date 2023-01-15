@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from database.base_meta import BaseSQLAlchemyModel
 
 
-@strawberry.enum
+# @strawberry.enum
 class TaskType(IntEnum):
     CLASS_WORK: int = 1
     HOME_WORK: int = 2

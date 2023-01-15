@@ -21,7 +21,8 @@ import {Layout} from "../components/layouts/Layout";
 import {TaskPreviewStudent} from "../components/TaskPreviewStudent";
 import {TaskPreviewTeacher} from "../components/TaskPreviewTeacher";
 import {useQuery} from "@apollo/client";
-import GET_LESSON_WITH_TASK from "../request/GetLessonWithTask";
+import GET_LESSON_WITH_TASKS from "../request/GetLessonTask";
+import {ITaskType} from "../models/ITask";
 
 
 const LessonPage: FunctionComponent = () => {
@@ -31,9 +32,12 @@ const LessonPage: FunctionComponent = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [groupRole, setGroupRole] = useState<IGroupRole>()
 
-	const {data, error} = useQuery(GET_LESSON_WITH_TASK,
+	const {data, error, loading} = useQuery(GET_LESSON_WITH_TASKS,
 		{variables: {"groupId": Number(groupId), "courseId": Number(courseId), "lessonId": Number(lessonId)}})
 
+	if (error) {
+		console.log(`Apollo error: ${error}`);
+	}
 
 	useEffect(() => {
 		async function fetchTasks() {
@@ -44,17 +48,11 @@ const LessonPage: FunctionComponent = () => {
 
 		if (data) {
 			fetchTasks()
-				.then(() => {
-					setIsLoading(false)
-                    console.log(`After: ${tasksResponse}`)
+			.then(() => {
+				setIsLoading(false)
 				})
-
 		}
-	}, [data])
-
-	if (error) {
-		console.log(`Error: ${error}`)
-	}
+	}, [loading])
 
 	if (isLoading) {
 		return <BaseSpinner/>
@@ -82,9 +80,9 @@ const LessonPage: FunctionComponent = () => {
 			mainChildren={
 				<>
 					{[
-						["Классная работа", "CLASS_WORK"],
-						["Домашняя работа", "HOME_WORK"],
-						["Дополнительные задачи", "ADDITIONAL_WORK"]].map((elem) => {
+						["Классная работа", ITaskType.CLASS_WORK],
+						["Домашняя работа", ITaskType.HOME_WORK],
+						["Дополнительные задачи", ITaskType.ADDITIONAL_WORK]].map((elem) => {
 						return <>
 							{tasksResponse!.tasks.filter((task) => {
 								return task.task_type === elem[1]
@@ -96,7 +94,7 @@ const LessonPage: FunctionComponent = () => {
 									{
 										tasksResponse!.tasks.filter((task) => {
 											return task.task_type === elem[1]
-										}).map((task, i) => {
+										}).map((task) => {
 											if (groupRole! === IGroupRole.STUDENT)
 												return (<TaskPreviewStudent key={task.id}
 																			taskId={task.id}

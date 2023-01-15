@@ -23,10 +23,15 @@ class TaskGQL:
     id: int
     max_score: float
     name: str
-    task_type: TaskType
+    task_type: int  # TaskType
     attachments: Attachment
 
 
 @strawberry.type
 class TasksResponse:
     tasks: List[TaskGQL]
+
+
+@strawberry.type
+class TaskResponse:
+    task: TaskGQL

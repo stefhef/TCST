@@ -1,8 +1,6 @@
 import {Link} from 'react-router-dom';
 
 import {
-    Grid,
-    GridItem,
     HStack,
     Icon,
     Progress,
@@ -16,28 +14,37 @@ import {BorderShadowBox} from "./BorderShadowBox";
 import {ITaskPreviewStudent} from '../models/ITaskPreviewStudent';
 import {useEffect, useState} from "react";
 import {ISolution} from '../models/ISolution';
-import SolutionService from "../services/SolutionService";
 import {useParams} from "react-router";
 import {getTaskStatusColorScheme} from '../common/colors';
 import {IStatusTaskColor} from "../models/IStatusTaskColor";
+import {useQuery} from "@apollo/client";
+import GET_SOLUTION_BEST from "../request/GetSolutionBest";
 
 
 export const TaskPreviewStudent: (props: ITaskPreviewStudent) => JSX.Element = (props: ITaskPreviewStudent) => {
     const [solution, setSolution] = useState<ISolution | null>()
     const [status, setStatus] = useState<IStatusTaskColor>()
-    const {courseId, groupId, lessonId} = useParams()
+    const {groupId, courseId, lessonId} = useParams()
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
+
+    const {data, loading, error} = useQuery(GET_SOLUTION_BEST,
+        {variables: {"courseId": Number(courseId), "groupId": Number(groupId), "taskId": props.taskId}})
+
+    if (error) {
+        console.log(`Apollo error: ${error}`);
+    }
+
     useEffect(() => {
         async function fetchSolution() {
-            const solution = await SolutionService.getBestSolution(groupId!, courseId!, props.taskId)
-            setSolution(solution)
+            setSolution(data.get_solution_best)
             setStatus(getTaskStatusColorScheme(solution?.status))
         }
 
-        fetchSolution().then(() => setIsLoaded(true))
+        if (data) {
+            fetchSolution().then(() => setIsLoaded(true))
+        }
+    }, [loading])
 
-
-    }, [courseId, groupId, lessonId])
     return (
         <Link to={`task/${props.taskId}`}>
             <BorderShadowBox padding="0.5vw" mb="5px">
