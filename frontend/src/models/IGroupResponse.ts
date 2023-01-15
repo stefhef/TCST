@@ -1,5 +1,5 @@
-import {IGroup} from "./IGroup";
+import { IGroup } from './IGroup';
 
 export interface IGroupResponse {
-    groups: IGroup[]
+	groups: IGroup[];
 }

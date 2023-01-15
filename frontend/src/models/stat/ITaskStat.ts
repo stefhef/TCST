@@ -1,9 +1,9 @@
-import {ISolutionStatus} from "../ITask";
+import { ISolutionStatus } from '../ITask';
 
 export interface ITaskStat {
-    id: number | string;
-    name: string;
-    max_score: number;
-    best_score: number;
-    status: ISolutionStatus
+	id: number | string;
+	name: string;
+	max_score: number;
+	best_score: number;
+	status: ISolutionStatus;
 }

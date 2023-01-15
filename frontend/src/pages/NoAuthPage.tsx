@@ -1,34 +1,37 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
-import {Heading} from "@chakra-ui/react";
-import {useActions} from "../hooks";
-import {BaseSpinner} from "../components";
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Heading } from '@chakra-ui/react';
+import { useActions } from '../hooks';
+import { BaseSpinner } from '../components';
 
 const NoAuthPage: FunctionComponent = () => {
-    const {loadUser, setUser} = useActions()
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+	const { loadUser, setUser } = useActions();
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        const encodeAccessToken = localStorage.getItem("access_token");
-        if (encodeAccessToken)
-            loadUser()
-        const timer = setTimeout(() => setIsLoading(false), 2000)
-        return () => clearTimeout(timer)
-    }, [])
-    if (isLoading) {
-        return <BaseSpinner/>
-    }
-    return (
-        <>
-            <Heading size="2xl" mb={5} style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '80vh',
-            }}>
-                Не авторизован
-            </Heading>
-        </>
-    );
+	useEffect(() => {
+		const encodeAccessToken = localStorage.getItem('access_token');
+		if (encodeAccessToken) loadUser();
+		const timer = setTimeout(() => setIsLoading(false), 2000);
+		return () => clearTimeout(timer);
+	}, []);
+	if (isLoading) {
+		return <BaseSpinner />;
+	}
+	return (
+		<>
+			<Heading
+				size="2xl"
+				mb={5}
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					height: '80vh',
+				}}
+			>
+				Не авторизован
+			</Heading>
+		</>
+	);
 };
 
 export default NoAuthPage;

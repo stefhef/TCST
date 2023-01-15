@@ -1,4 +1,4 @@
 export interface ITaskPreviewTeacher {
-    taskId: string | number;
-    taskName: string;
+	taskId: string | number;
+	taskName: string;
 }

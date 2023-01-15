@@ -1,54 +1,66 @@
-import React, {useEffect, useState} from "react";
-import {useParams} from "react-router";
-import {Text, HStack, Image, Button, SkeletonCircle, SkeletonText, useColorMode} from "@chakra-ui/react";
-import {IUser, IStatusTaskColor} from "../models";
-import {useActions, useTypedSelector} from "../hooks";
-import SolutionService from "../services/SolutionService";
-import UserService from "../services/UserService";
-import { getTaskStatusColorScheme } from "../common/colors";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import {
+	Text,
+	HStack,
+	Image,
+	Button,
+	SkeletonCircle,
+	SkeletonText,
+	useColorMode,
+} from '@chakra-ui/react';
+import { IUser, IStatusTaskColor } from '../models';
+import { useActions, useTypedSelector } from '../hooks';
+import SolutionService from '../services/SolutionService';
+import UserService from '../services/UserService';
+import { getTaskStatusColorScheme } from '../common/colors';
 
 import './TaskStudentsListItem.css';
 
 interface ITaskStudentsList {
-    studentId: number;
-    index: number;
+	studentId: number;
+	index: number;
 }
 
-export const TaskStudentsListItem: (props: ITaskStudentsList) => JSX.Element = (props: ITaskStudentsList) => {
-    const [user, setUser] = useState<IUser>()
-    const [statusTaskColor, setStatusTaskColor] = useState<IStatusTaskColor>()
-    const {courseId, groupId, lessonId, taskId} = useParams()
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-    const {setSelectedUser, fetchBestSolution, fetchUserData} = useActions()
-    const {selectedUser} = useTypedSelector(state => state.selectedUser)
-    const {colorMode} = useColorMode()
-    const {current_solution} = useTypedSelector(state => state.solution)
-    const {users} = useTypedSelector(state => state.usersData)
+export const TaskStudentsListItem: (props: ITaskStudentsList) => JSX.Element = (
+	props: ITaskStudentsList
+) => {
+	const [user, setUser] = useState<IUser>();
+	const [statusTaskColor, setStatusTaskColor] = useState<IStatusTaskColor>();
+	const { courseId, groupId, lessonId, taskId } = useParams();
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const { setSelectedUser, fetchBestSolution, fetchUserData } = useActions();
+	const { selectedUser } = useTypedSelector((state) => state.selectedUser);
+	const { colorMode } = useColorMode();
+	const { current_solution } = useTypedSelector((state) => state.solution);
+	const { users } = useTypedSelector((state) => state.usersData);
 
-    function getUserBestSolution() {
-        SolutionService.getBestSolution(groupId!, courseId!, taskId!, props.studentId)
-            .then((solution) => {
-                setStatusTaskColor(getTaskStatusColorScheme(solution?.status))
-            })
-    }
+	function getUserBestSolution() {
+		SolutionService.getBestSolution(
+			groupId!,
+			courseId!,
+			taskId!,
+			props.studentId
+		).then((solution) => {
+			setStatusTaskColor(getTaskStatusColorScheme(solution?.status));
+		});
+	}
 
-    function onClick() {
-        setSelectedUser(user!)
-        fetchBestSolution(groupId!, courseId!, taskId!, props.studentId)
-    }
-    useEffect(() => {
-        if (!user) {
-            UserService.getUserById(props.studentId).then((user) => {
-                setUser(user)
-                getUserBestSolution()
-                setIsLoading(false)
-            })
-        }
-    }, [])
-    useEffect(() => {
-
-    }, [user])
-    /*useEffect(() => {
+	function onClick() {
+		setSelectedUser(user!);
+		fetchBestSolution(groupId!, courseId!, taskId!, props.studentId);
+	}
+	useEffect(() => {
+		if (!user) {
+			UserService.getUserById(props.studentId).then((user) => {
+				setUser(user);
+				getUserBestSolution();
+				setIsLoading(false);
+			});
+		}
+	}, []);
+	useEffect(() => {}, [user]);
+	/*useEffect(() => {
         if (!user) {
             const checkUser = users.find(u => u.id === props.studentId)
             if (!checkUser) {
@@ -74,26 +86,28 @@ export const TaskStudentsListItem: (props: ITaskStudentsList) => JSX.Element = (
         }
     }, [current_solution])*/
 
-    return (
-        <Button width="100%" justifyContent="start"
-                onClick={onClick}
-                background={statusTaskColor?.iconColor}
-                borderColor={colorMode === "light" ? "gray.700" : "gray.200"}
-                borderWidth={(selectedUser && user?.id === selectedUser.id) ? 3: undefined}
-        >
-            <HStack>
-                <SkeletonCircle boxSize="34px" isLoaded={!isLoading}>
-                    <Image
-                        className={'task-students-list-item__image'}
-                        src={user?.avatar_url}
-                    />
-                </SkeletonCircle>
-                <SkeletonText isLoaded={!isLoading}>
-                    <Text className={'task-students-list-item__text'}>
-                        {`${user?.last_name} ${user?.first_name}`}
-                    </Text>
-                </SkeletonText>
-            </HStack>
-        </Button>
-    );
-}
+	return (
+		<Button
+			width="100%"
+			justifyContent="start"
+			onClick={onClick}
+			background={statusTaskColor?.iconColor}
+			borderColor={colorMode === 'light' ? 'gray.700' : 'gray.200'}
+			borderWidth={selectedUser && user?.id === selectedUser.id ? 3 : undefined}
+		>
+			<HStack>
+				<SkeletonCircle boxSize="34px" isLoaded={!isLoading}>
+					<Image
+						className={'task-students-list-item__image'}
+						src={user?.avatar_url}
+					/>
+				</SkeletonCircle>
+				<SkeletonText isLoaded={!isLoading}>
+					<Text className={'task-students-list-item__text'}>
+						{`${user?.last_name} ${user?.first_name}`}
+					</Text>
+				</SkeletonText>
+			</HStack>
+		</Button>
+	);
+};

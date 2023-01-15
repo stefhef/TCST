@@ -1,5 +1,5 @@
 export enum IGroupRole {
-    STUDENT,
-    TEACHER,
-    OWNER
+	STUDENT,
+	TEACHER,
+	OWNER,
 }

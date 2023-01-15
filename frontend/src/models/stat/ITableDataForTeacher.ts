@@ -1,30 +1,30 @@
-import {IUser, ISolutionStatus} from "../index";
+import { IUser, ISolutionStatus } from '../index';
 
 interface ITaskStudentDataForTeacher {
-    task_id: number
-    task_name: string
-    best_score: number
-    status: ISolutionStatus
+	task_id: number;
+	task_name: string;
+	best_score: number;
+	status: ISolutionStatus;
 }
 
 interface ITaskLessonDataForTeacher {
-    task_id: number
-    task_name: string
-    max_score: number
+	task_id: number;
+	task_name: string;
+	max_score: number;
 }
 
 interface ILessonDataForTeacher {
-    lesson_id: number
-    lesson_name: string
-    tasks: ITaskLessonDataForTeacher[]
+	lesson_id: number;
+	lesson_name: string;
+	tasks: ITaskLessonDataForTeacher[];
 }
 
 interface IStudentTaskDataForTeacher {
-    student: IUser
-    tasks: ITaskStudentDataForTeacher[]
+	student: IUser;
+	tasks: ITaskStudentDataForTeacher[];
 }
 
 export interface ITableDataForTeacher {
-    lessons: ILessonDataForTeacher[]
-    students: IStudentTaskDataForTeacher[]
+	lessons: ILessonDataForTeacher[];
+	students: IStudentTaskDataForTeacher[];
 }

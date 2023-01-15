@@ -1,26 +1,25 @@
-
 export enum IAttachmentTaskTypeName {
-    INPUT_OUTPUT = "input_output",
-    IMAGE = "image"
+	INPUT_OUTPUT = 'input_output',
+	IMAGE = 'image',
 }
 
 interface IAttachmentTaskInputOutputData {
-    input: string[];
-    output: string[];
+	input: string[];
+	output: string[];
 }
 
 interface IAttachmentTaskImageData {
-    url: string;
+	url: string;
 }
 
 export interface IAttachmentTaskInputOutput {
-    attachment_type: IAttachmentTaskTypeName.INPUT_OUTPUT;
-    data: IAttachmentTaskInputOutputData;
+	attachment_type: IAttachmentTaskTypeName.INPUT_OUTPUT;
+	data: IAttachmentTaskInputOutputData;
 }
 
 export interface IAttachmentTaskImage {
-    attachment_type: IAttachmentTaskTypeName.IMAGE;
-    data: IAttachmentTaskImageData;
+	attachment_type: IAttachmentTaskTypeName.IMAGE;
+	data: IAttachmentTaskImageData;
 }
 
-export type IAttachmentTask = IAttachmentTaskImage | IAttachmentTaskInputOutput
+export type IAttachmentTask = IAttachmentTaskImage | IAttachmentTaskInputOutput;

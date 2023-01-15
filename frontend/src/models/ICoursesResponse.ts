@@ -1,5 +1,5 @@
-import {ICourse} from "./ICourse";
+import { ICourse } from './ICourse';
 
 export interface ICoursesResponse {
-    courses: ICourse[];
+	courses: ICourse[];
 }

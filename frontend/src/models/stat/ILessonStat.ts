@@ -1,7 +1,7 @@
-import {ITaskStat} from "./ITaskStat";
+import { ITaskStat } from './ITaskStat';
 
 export interface ILessonStat {
-    id: number | string;
-    name: string;
-    tasks: ITaskStat[];
+	id: number | string;
+	name: string;
+	tasks: ITaskStat[];
 }

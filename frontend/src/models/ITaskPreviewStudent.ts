@@ -1,5 +1,5 @@
 export interface ITaskPreviewStudent {
-    taskId: string | number;
-    taskName: string;
-    taskMaxScore: number;
+	taskId: string | number;
+	taskName: string;
+	taskMaxScore: number;
 }

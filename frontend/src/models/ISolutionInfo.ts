@@ -1,5 +1,5 @@
-import {ISolution} from "./ISolution";
+import { ISolution } from './ISolution';
 
 export interface ISolutionInfo extends ISolution {
-    max_score: number
+	max_score: number;
 }

@@ -1,11 +1,11 @@
-import {ISolutionStatus} from "./ITask";
+import { ISolutionStatus } from './ITask';
 
 export interface ISolution {
-    id: number | string
-    score: number;
-    code: string;
-    status: ISolutionStatus;
-    time_start: Date;
-    time_finish?: Date;
-    check_system_answer?: string;
+	id: number | string;
+	score: number;
+	code: string;
+	status: ISolutionStatus;
+	time_start: Date;
+	time_finish?: Date;
+	check_system_answer?: string;
 }

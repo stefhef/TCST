@@ -1,7 +1,7 @@
 export interface ICoursePreview {
-    groupId: number;
-    courseId: number;
-    linkTo: string;
-    courseName: string;
-    groupName: string;
+	groupId: number;
+	courseId: number;
+	linkTo: string;
+	courseName: string;
+	groupName: string;
 }

@@ -1,7 +1,7 @@
-import {ILessonStat} from "./ILessonStat";
+import { ILessonStat } from './ILessonStat';
 
 export interface ICourseStat {
-    id: number | string;
-    name: string;
-    lessons: ILessonStat[];
+	id: number | string;
+	name: string;
+	lessons: ILessonStat[];
 }

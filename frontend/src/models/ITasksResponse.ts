@@ -1,5 +1,5 @@
-import {ITask} from "./ITask";
+import { ITask } from './ITask';
 
 export interface ITasksResponse {
-    tasks: ITask[];
+	tasks: ITask[];
 }
