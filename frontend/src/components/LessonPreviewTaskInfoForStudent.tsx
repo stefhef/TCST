@@ -1,28 +1,19 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Divider,
   HStack,
   Icon,
   Skeleton,
   Spacer,
   Text,
-  chakra,
 } from "@chakra-ui/react";
-import { ILessonPreview } from "../models/ILessonPreview";
-import { BorderShadowBox } from "./BorderShadowBox";
-import React, { useEffect, useState } from "react";
-import { ILessonStat } from "../models/stat/ILessonStat";
+import { ILessonPreview, ILessonStat } from "../models";
+
 import StatService from "../services/StatService";
 import { getTaskStatusColorScheme } from "../common/colors";
-import { BaseSpinner } from "./BaseSpinner";
-import { ShadowBox } from "./ShadowBox";
+import { BaseSpinner, ShadowBox } from "./index";
 
 export const LessonPreviewTaskInfoForStudent: (
   props: ILessonPreview

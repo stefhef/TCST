@@ -1,4 +1,4 @@
-import {Field, FieldInputProps, Form, Formik, FormikProps} from "formik";
+import React from "react";
 import {
     Button,
     FormControl,
@@ -8,7 +8,7 @@ import {
     NumberInputField,
     NumberInputStepper
 } from "@chakra-ui/react";
-import React, {useState} from "react";
+import {Field, FieldInputProps, Form, Formik, FormikProps} from "formik";
 
 // @ts-ignore
 export const TestPage = ({}) => {
@@ -62,4 +62,4 @@ export const TestPage = ({}) => {
             )}
         </Formik>
     )
-}
+};

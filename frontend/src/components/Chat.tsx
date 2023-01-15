@@ -1,20 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
-
-import {Flex, Box, Button} from '@chakra-ui/react';
-
-import ChatInput from './ChatInput';
-import {ChatMessage} from "./ChatMessage";
-import {IChatMessage} from "../models/IChatMessage";
-import ChatMessageService from "../services/ChatMessageService";
+import React, {useEffect, useRef} from 'react';
 import {useParams} from "react-router";
-import {BaseSpinner} from "./BaseSpinner";
-import {useTypedSelector} from "../hooks/useTypedSelector";
-import {useActions} from "../hooks/useActions";
-import {strictEqual} from "assert";
-import {sleep} from "../api/Common";
+
+import {Flex, Box} from '@chakra-ui/react';
+
+import {ChatMessage, ChatInput} from "./index";
+
+import {useActions, useTypedSelector} from "../hooks";
 
 
-export default function Chat() {
+export function Chat() {
     const {chatMessages, isLoadingChatMessages} = useTypedSelector(state => state.chatMessages)
     const {fetchChatMessages, clearChatMessages} = useActions()
     const {groupId, courseId, taskId} = useParams();

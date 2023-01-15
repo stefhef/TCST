@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useEffect} from 'react';
-
+import Editor from "@monaco-editor/react";
 import {
     Box,
     Button,
@@ -23,16 +23,12 @@ import {
     useColorMode,
     useDisclosure
 } from '@chakra-ui/react';
-
-import {ISolutionStatus} from "../models/ITask";
 import {EditIcon} from "@chakra-ui/icons";
-import Editor from "@monaco-editor/react";
-import {useTypedSelector} from "../hooks/useTypedSelector";
-import {IGroupRole} from "../models/IGroupRole";
-import {useActions} from "../hooks/useActions";
+import {ISolutionStatus, IGroupRole} from "../models";
+import {useActions, useTypedSelector} from "../hooks";
 import {Field, FieldInputProps, Form, Formik, FormikProps} from "formik";
 import SolutionService from "../services/SolutionService";
-import {get_format_date, sleep} from "../api/Common";
+import {get_format_date} from "../api/Common";
 
 
 export interface ITaskInfo {

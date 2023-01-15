@@ -1,8 +1,5 @@
 import {IRequestConfig, request} from "../api/api";
-import {ITasksResponse} from "../models/ITasksResponse";
-import {ITask} from "../models/ITask";
-import {ITaskCountForStudentResponse} from "../models/ITaskCountForStudentResponse";
-import {ITaskCountForTeacherResponse} from "../models/ITaskCountForTeacherResponse";
+import {ITask, ITasksResponse, ITaskCountForStudentResponse, ITaskCountForTeacherResponse} from "../models";
 
 export default class TaskService {
     static async getTasks(group_id: number | string,

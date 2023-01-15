@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-
+import {useNavigate} from "react-router-dom";
 import {
     Box,
     Button,
@@ -13,7 +13,6 @@ import {
     Text,
     useDisclosure,
 } from '@chakra-ui/react';
-import {useNavigate} from "react-router-dom";
 
 export default function NotFoundPage() {
     const {isOpen, onOpen, onClose} = useDisclosure();

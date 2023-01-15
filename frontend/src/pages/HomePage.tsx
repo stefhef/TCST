@@ -1,11 +1,8 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Heading, SimpleGrid, useMediaQuery} from "@chakra-ui/react";
-import {BaseSpinner} from "../components/BaseSpinner";
-import {CoursePreview} from "../components/CoursePreview";
-import {Layout} from "../components/layouts/Layout";
-import {ICoursePreview} from "../models/ICoursePreview";
-import {IHomePageData} from "../models/IHomePageData";
-import {useTypedSelector} from "../hooks/useTypedSelector";
+import {BaseSpinner, CoursePreview, Layout} from "../components";
+import {ICoursePreview, IHomePageData} from "../models";
+import {useTypedSelector} from "../hooks";
 import {useQuery} from "@apollo/client";
 import ALL_COURSE from "../request/GET_ALL_COURSE";
 

@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 
 import {Stat, StatNumber, StatHelpText} from '@chakra-ui/react';
 import {BorderShadowBox} from "./BorderShadowBox";
-import {ICoursePreview} from '../models/ICoursePreview';
+import {ICoursePreview} from '../models';
 
 export const CoursePreview: (props: ICoursePreview) => JSX.Element = (props: ICoursePreview) => {
     return (

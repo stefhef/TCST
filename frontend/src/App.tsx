@@ -2,8 +2,7 @@ import React, {FunctionComponent} from 'react';
 import {BrowserRouter} from "react-router-dom";
 import {ChakraProvider, ColorModeScript} from "@chakra-ui/react";
 import theme from "./theme";
-import AppRouter from "./components/AppRouter";
-import {MainHeader} from "./components/layouts/MainHeader";
+import {MainHeader, AppRouter} from "./components";
 
 
 

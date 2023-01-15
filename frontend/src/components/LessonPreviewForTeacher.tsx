@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Link} from 'react-router-dom';
-import {HStack, IconButton, Progress, Spacer, Text, VStack} from '@chakra-ui/react';
 import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/all';
-import {ILessonPreview} from "../models/ILessonPreview";
-import {ITaskCountForTeacherResponse} from "../models/ITaskCountForTeacherResponse";
-import {BorderShadowBox} from "./BorderShadowBox";
-import {LessonPreviewTaskInfoForStudent} from "./LessonPreviewTaskInfoForStudent";
+import {HStack, IconButton, Progress, Spacer, Text, VStack} from '@chakra-ui/react';
+import {ILessonPreview, ITaskCountForTeacherResponse} from "../models";
+import {BorderShadowBox, LessonPreviewTaskInfoForStudent} from "./index";
 import {useMutation, useQuery} from "@apollo/client";
 import GET_TASK_COUNT_FOR_TEACHER from "../request/GET_TASK_COUNT_FOR_TEACHER";
 

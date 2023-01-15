@@ -4,9 +4,10 @@
 import React from 'react';
 
 import {Image, Table, Tbody, Td, Th, Thead, Tr, Text} from '@chakra-ui/react';
-import './TaskAttachment.css';
-import {IAttachmentTask, IAttachmentTaskTypeName} from "../models/IAttachmentTask";
+import {IAttachmentTask, IAttachmentTaskTypeName} from "../models";
 import {baseApi} from "../api/api";
+
+import './TaskAttachment.css';
 
 export const TaskAttachment: (props: IAttachmentTask) => JSX.Element = (props: IAttachmentTask) => {
     console.log(props)

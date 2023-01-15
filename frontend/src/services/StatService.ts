@@ -1,7 +1,5 @@
-import {ICourseStat} from "../models/stat/ICourseStat";
 import {IRequestConfig, request} from "../api/api";
-import {ILessonStat} from "../models/stat/ILessonStat";
-import {ITableDataForTeacher} from "../models/stat/ITableDataForTeacher";
+import {ILessonStat, ITableDataForTeacher, ICourseStat} from "../models";
 
 export default class StatService {
     static async getCourseStatForStudent(group_id: number | string,

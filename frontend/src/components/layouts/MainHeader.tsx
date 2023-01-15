@@ -12,12 +12,12 @@ import {
     Wrap, useColorMode,
 } from '@chakra-ui/react';
 import { FiSettings, SiVk, ImExit, ImProfile } from 'react-icons/all';
-import {useTypedSelector} from "../../hooks/useTypedSelector";
-import {useActions} from "../../hooks/useActions";
+import {useTypedSelector, useActions} from "../../hooks";
 import {baseURL, vkClientId} from "../../api/api";
 
-import './MainHeader.css';
 import {client} from "../../apollo";
+
+import './MainHeader.css';
 
 export const MainHeader: FunctionComponent = () => {
     const {isAuth, user} = useTypedSelector(state => state.auth)

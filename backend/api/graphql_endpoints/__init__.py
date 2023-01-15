@@ -13,19 +13,20 @@ from .lesson import LessonQuery
 from .group import GroupQuery
 from .solution import SolutionQuery
 from .task import TaskQuery
+from .stat import StatQuery
 
 import pickle
 
 
 async def get_context(
-        current_user: User = Depends(get_current_active_user),
+        # current_user: User = Depends(get_current_active_user),
         session: AsyncSession = Depends(get_session)
 ):
     """Чтобы обойти авторизацию"""
     # with open(file='user2.txt', mode='wb') as f:
     #     pickle.dump(current_user, f, pickle.HIGHEST_PROTOCOL)
-    # with open('user2.txt', 'rb') as f:
-    #     current_user = pickle.load(f)
+    with open('user2.txt', 'rb') as f:
+        current_user = pickle.load(f)
     return {
         "current_user": current_user,
         "session": session
@@ -33,7 +34,7 @@ async def get_context(
 
 
 @strawberry.type
-class Query(CourseQuery, LessonQuery, GroupQuery, TaskQuery, SolutionQuery):
+class Query(CourseQuery, LessonQuery, GroupQuery, TaskQuery, SolutionQuery, StatQuery):
     """All query"""
     pass
 

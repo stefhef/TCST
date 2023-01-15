@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig, Method} from "axios";
 import {store} from "../store";
 import {AuthActionCreators} from "../store/reducers/auth/action-creators";
-import {IAuthLogin} from "../models/IAuthLogin";
+import {IAuthLogin} from "../models";
 import {decodeLocal} from "./Common";
 
 

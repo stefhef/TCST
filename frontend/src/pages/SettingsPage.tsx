@@ -1,7 +1,6 @@
 import React, {FunctionComponent} from 'react';
-
 import { Button, Heading, SimpleGrid, useColorMode } from '@chakra-ui/react';
-import {Layout} from "../components/layouts/Layout";
+import {Layout} from "../components";
 
 export const SettingsPage: FunctionComponent = () => {
     const { toggleColorMode } = useColorMode();

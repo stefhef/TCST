@@ -1,6 +1,5 @@
 import {IRequestConfig, request} from "../api/api";
-import IGroupResponse from "../models/IGroupResponse";
-import {IGroupRole} from "../models/IGroupRole";
+import {IGroupRole, IGroupResponse} from "../models";
 
 export default class GroupService {
     static async getGroups(): Promise<IGroupResponse> {

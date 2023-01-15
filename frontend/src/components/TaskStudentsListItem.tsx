@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
-import UserService from "../services/UserService";
-import {Box, Text, HStack, Image, Button, SkeletonCircle, SkeletonText, useColorMode} from "@chakra-ui/react";
-import {BaseSpinner} from "./BaseSpinner";
-import {IUser} from "../models/IUser";
-import {useActions} from "../hooks/useActions";
-import {useTypedSelector} from "../hooks/useTypedSelector";
+import {Text, HStack, Image, Button, SkeletonCircle, SkeletonText, useColorMode} from "@chakra-ui/react";
+import {IUser, IStatusTaskColor} from "../models";
+import {useActions, useTypedSelector} from "../hooks";
 import SolutionService from "../services/SolutionService";
+import UserService from "../services/UserService";
 import { getTaskStatusColorScheme } from "../common/colors";
-import {IStatusTaskColor} from "../models/IStatusTaskColor";
 
 import './TaskStudentsListItem.css';
 

@@ -1,23 +1,21 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
+import {useParams} from "react-router";
 import {
     HStack,
     Icon,
     Image,
     Text,
-    TableContainer, Thead, Tr, Th, Table, Td, Tbody, Divider, Tooltip
+    TableContainer, Thead, Tr, Th, Table, Td, Tbody, Tooltip
 } from "@chakra-ui/react";
 
-import {ICourseStat} from "../models/stat/ICourseStat";
 import StatService from "../services/StatService";
-import {useParams} from "react-router";
 import {getTaskStatusColorScheme} from "../common/colors";
-import {BorderShadowBox} from "./BorderShadowBox";
-import {ITableDataForTeacher} from "../models/stat/ITableDataForTeacher";
+import {ITableDataForTeacher} from "../models";
 import {BaseSpinner} from "./BaseSpinner";
 
 import './ProfileCourse.css'
 
-const ProfileCourseStatForTeacher: FunctionComponent = () => {
+export const ProfileCourseStatForTeacher: FunctionComponent = () => {
     const {groupId, courseId} = useParams();
     const [tableData, setTableData] = useState<ITableDataForTeacher>()
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -173,6 +171,4 @@ const ProfileCourseStatForTeacher: FunctionComponent = () => {
         </TableContainer>
     );
 
-}
-
-export default ProfileCourseStatForTeacher;
+};

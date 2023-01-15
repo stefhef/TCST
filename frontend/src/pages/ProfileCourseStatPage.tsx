@@ -1,9 +1,7 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useParams} from "react-router";
-import ProfileCourseStatForStudent from "../components/ProfileCourseStatForStudent";
-import ProfileCourseStatForTeacher from "../components/ProfileCourseStatForTeacher";
-import {Layout} from "../components/layouts/Layout";
-import {IGroupRole} from "../models/IGroupRole";
+import {ProfileCourseStatForStudent, ProfileCourseStatForTeacher, Layout} from '../components';
+import {IGroupRole} from "../models";
 import {useQuery} from "@apollo/client";
 import GET_ROLE from "../request/GET_ROLE";
 

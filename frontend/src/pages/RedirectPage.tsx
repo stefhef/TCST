@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
-import {useActions} from "../hooks/useActions";
-import {BaseSpinner} from "../components/BaseSpinner";
+import {useActions} from "../hooks";
+import {BaseSpinner} from "../components";
 import {sleep} from "../api/Common";
 
 export default function RedirectPage() {

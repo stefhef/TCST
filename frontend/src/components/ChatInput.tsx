@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {useParams} from "react-router";
+import {MdSend} from 'react-icons/all';
 
 import {
     InputGroup,
@@ -8,18 +10,13 @@ import {
     useToast, FormControl,
 } from '@chakra-ui/react';
 
-import {MdSend} from 'react-icons/all';
-import ChatMessageService from "../services/ChatMessageService";
-import {useParams} from "react-router";
-import {useTypedSelector} from "../hooks/useTypedSelector";
-import {BaseSpinner} from "./BaseSpinner";
-import {useActions} from "../hooks/useActions";
+import {useActions, useTypedSelector} from "../hooks";
 
 export interface IChatInput {
 
 }
 
-export default function ChatInput({}: IChatInput) {
+export function ChatInput({}: IChatInput) {
     const [value, setValue] = useState('');
     const toast = useToast();
     const {selectedUser} = useTypedSelector(state => state.selectedUser)

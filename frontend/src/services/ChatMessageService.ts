@@ -1,4 +1,4 @@
-import {IChatMessage} from "../models/IChatMessage";
+import {IChatMessage} from "../models";
 import {IRequestConfig, request} from "../api/api";
 
 export default class ChatMessageService {
@@ -27,4 +27,4 @@ export default class ChatMessageService {
         }
         return request(requestConfig)
     }
-}
+};

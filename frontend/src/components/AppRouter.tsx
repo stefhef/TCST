@@ -4,9 +4,9 @@ import {
     Route,
 } from "react-router-dom";
 import {privateRoutes, publicRoutes} from "../routes";
-import {useTypedSelector} from "../hooks/useTypedSelector";
+import {useTypedSelector} from "../hooks";
 
-const AppRouter: FunctionComponent = () => {
+export const AppRouter: FunctionComponent = () => {
     const {isAuth} = useTypedSelector(state => state.auth)
     return (
         isAuth
@@ -20,5 +20,3 @@ const AppRouter: FunctionComponent = () => {
             </Routes>
     );
 };
-
-export default AppRouter;

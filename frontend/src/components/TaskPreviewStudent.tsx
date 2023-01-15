@@ -1,3 +1,5 @@
+import {useEffect, useState} from "react";
+import {useParams} from "react-router";
 import {Link} from 'react-router-dom';
 
 import {
@@ -11,12 +13,8 @@ import {
     VStack
 } from '@chakra-ui/react';
 import {BorderShadowBox} from "./BorderShadowBox";
-import {ITaskPreviewStudent} from '../models/ITaskPreviewStudent';
-import {useEffect, useState} from "react";
-import {ISolution} from '../models/ISolution';
-import {useParams} from "react-router";
+import {ITaskPreviewStudent, ISolution, IStatusTaskColor} from '../models';
 import {getTaskStatusColorScheme} from '../common/colors';
-import {IStatusTaskColor} from "../models/IStatusTaskColor";
 import {useQuery} from "@apollo/client";
 import GET_SOLUTION_BEST from "../request/GET_SOLUTION_BEST";
 

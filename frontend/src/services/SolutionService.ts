@@ -1,6 +1,5 @@
 import {IRequestConfig, request} from "../api/api";
-import {ISolution} from "../models/ISolution";
-import {ISolutionCountResponse} from "../models/ISolutionCountResponse";
+import {ISolution, ISolutionCountResponse} from "../models";
 
 export default class SolutionService {
     static async getSolution(group_id: number | string,

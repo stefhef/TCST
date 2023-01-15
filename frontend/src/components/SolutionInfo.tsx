@@ -1,26 +1,13 @@
-import {Link} from 'react-router-dom';
-
-import {
-    Button,
-    Center,
-    Divider, HStack,
-    LinkBox, SimpleGrid, Spacer,
-    Stack,
-    Stat,
-    Text,
-    useColorMode,
-    useDisclosure,
-    VStack
-} from '@chakra-ui/react';
-import {BorderShadowBox} from "./BorderShadowBox";
-import {ISolution} from "../models/ISolution";
-import {ISolutionStatus} from "../models/ITask";
-import {useTypedSelector} from "../hooks/useTypedSelector";
-import {useActions} from "../hooks/useActions";
 import {useEffect} from "react";
+import {
+    Divider, HStack, LinkBox,
+    SimpleGrid, Spacer, Text,
+    useColorMode, VStack
+} from '@chakra-ui/react';
+import {useActions, useTypedSelector} from "../hooks";
 import {get_format_date} from "../api/Common";
 import {SolutionCheckSystemInfo} from "./SolutionCheckSystemInfo";
-import {ISolutionInfo} from "../models/ISolutionInfo";
+import {ISolutionInfo} from "../models";
 
 export const SolutionInfo: (props: ISolutionInfo) => JSX.Element = (props: ISolutionInfo) => {
     const {current_solution} = useTypedSelector(state => state.solution)

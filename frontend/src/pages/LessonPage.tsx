@@ -12,14 +12,8 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 
-import {BaseSpinner} from "../components/BaseSpinner";
-import {Layout} from "../components/layouts/Layout";
-import {TaskPreviewStudent} from "../components/TaskPreviewStudent";
-import {TaskPreviewTeacher} from "../components/TaskPreviewTeacher";
-import {ITasksResponse} from "../models/ITasksResponse";
-import {ILesson} from "../models/ILesson";
-import {IGroupRole} from "../models/IGroupRole";
-import {ITaskType} from "../models/ITask";
+import {BaseSpinner, Layout, TaskPreviewStudent, TaskPreviewTeacher} from "../components";
+import {ITasksResponse, ILesson, IGroupRole, ITaskType} from "../models";
 import {useQuery} from "@apollo/client";
 import GET_LESSON_WITH_TASKS from "../request/GET_LESSON_WITH_TASKS";
 

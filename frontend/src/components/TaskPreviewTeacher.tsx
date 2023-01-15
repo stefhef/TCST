@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
-import {Link} from 'react-router-dom';
 import {useParams} from "react-router";
+import {Link} from 'react-router-dom';
 import {IconType} from 'react-icons';
 import {BsFillPeopleFill} from 'react-icons/all';
 import {Grid, GridItem, HStack, Icon, Progress, SkeletonText, Text} from '@chakra-ui/react';
 import {BorderShadowBox} from "./BorderShadowBox";
-import {ITaskPreviewTeacher} from '../models/ITaskPreviewTeacher';
-import {ISolutionCountResponse} from "../models/ISolutionCountResponse";
+import {ITaskPreviewTeacher, ISolutionCountResponse} from '../models';
 import {useQuery} from "@apollo/client";
 import GET_SOLUTION_COUNT from "../request/GET_SOLUTION_COUNT";
 

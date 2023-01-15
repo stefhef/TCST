@@ -1,11 +1,9 @@
-import {Link} from 'react-router-dom';
-import {HStack, IconButton, Progress, Spacer, Text, VStack} from '@chakra-ui/react';
-import {ILessonPreview} from "../models/ILessonPreview";
-import {BorderShadowBox} from "./BorderShadowBox";
 import React, {useEffect, useState} from "react";
-import {LessonPreviewTaskInfoForStudent} from "./LessonPreviewTaskInfoForStudent";
+import {Link} from 'react-router-dom';
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from 'react-icons/all';
-import {ITaskCountForStudentResponse} from "../models/ITaskCountForStudentResponse";
+import {HStack, IconButton, Progress, Spacer, Text, VStack} from '@chakra-ui/react';
+import {ILessonPreview, ITaskCountForStudentResponse} from "../models";
+import {BorderShadowBox, LessonPreviewTaskInfoForStudent} from "./index";
 import {useQuery} from "@apollo/client";
 import GET_TASK_COUNT from "../request/GET_TASK_COUNT";
 

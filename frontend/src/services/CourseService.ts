@@ -1,6 +1,5 @@
 import {IRequestConfig, request} from "../api/api";
-import {ICoursesResponse} from "../models/ICoursesResponse";
-import {ICourse} from "../models/ICourse";
+import {ICourse, ICoursesResponse} from "../models";
 
 export default class CourseService {
     static async getCourses(group_id: number | string): Promise<ICoursesResponse> {

@@ -1,5 +1,4 @@
-import {ICourse} from "./ICourse";
-import {IGroup} from "./IGroup";
+import {ICourse, IGroup} from "./index";
 
 export interface IHomePageData {
     course: ICourse,

@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Heading} from "@chakra-ui/react";
-import {useActions} from "../hooks/useActions";
-import {BaseSpinner} from "../components/BaseSpinner";
+import {useActions} from "../hooks";
+import {BaseSpinner} from "../components";
 
 const NoAuthPage: FunctionComponent = () => {
     const {loadUser, setUser} = useActions()

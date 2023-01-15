@@ -1,26 +1,10 @@
-import {Link} from 'react-router-dom';
-
-import {
-    Button,
-    Center, Code,
-    Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader,
-    DrawerOverlay, Heading,
-    IconButton,
-    LinkBox,
-    Stack,
-    Text,
-    useColorMode,
-    useDisclosure, VStack
-} from '@chakra-ui/react';
-import {BorderShadowBox} from "./BorderShadowBox";
-import {ISolution} from "../models/ISolution";
-import {ISolutionStatus} from "../models/ITask";
-import {useTypedSelector} from "../hooks/useTypedSelector";
-import {useActions} from "../hooks/useActions";
-import React, {useEffect} from "react";
-import {get_format_date} from "../api/Common";
+import React from "react";
 import {GoInfo} from 'react-icons/go';
-import {TaskAttachment} from "./TaskAttachment";
+import {
+    Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader,
+    DrawerOverlay, IconButton, Text, useDisclosure, VStack
+} from '@chakra-ui/react';
+import {ISolution, ISolutionStatus } from "../models";
 
 export const SolutionCheckSystemInfo: (solution: ISolution) => JSX.Element = (solution: ISolution) => {
     const {isOpen, onOpen, onClose} = useDisclosure()

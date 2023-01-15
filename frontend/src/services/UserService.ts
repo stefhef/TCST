@@ -1,6 +1,5 @@
 import {IRequestConfig, request} from "../api/api";
-import {IStudentWithSolution} from "../models/IStudentWithSolution";
-import {IUser} from "../models/IUser";
+import {IUser, IStudentWithSolution} from "../models";
 
 export default class UserService {
     static async getStudentsWithSolution(group_id: number | string,

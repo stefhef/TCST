@@ -1,10 +1,7 @@
-import React, {useEffect} from 'react';
-
-import {Box, Flex, Image} from '@chakra-ui/react';
+import React from 'react';
 
 import ChatBlob from './ChatBlob';
-import {IChatMessage} from "../models/IChatMessage";
-import {useTypedSelector} from "../hooks/useTypedSelector";
+import {IChatMessage} from "../models";
 
 export const ChatMessage: (props: IChatMessage) => JSX.Element = (props: IChatMessage) => {
     return (

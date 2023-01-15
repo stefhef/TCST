@@ -1,6 +1,5 @@
 import {IRequestConfig, request} from "../api/api";
-import {ILessonsResponse} from "../models/ILessonsResponse";
-import {ILesson} from "../models/ILesson";
+import {ILesson, ILessonsResponse} from "../models";
 
 export default class LessonService {
     static async getLessons(group_id: number | string,

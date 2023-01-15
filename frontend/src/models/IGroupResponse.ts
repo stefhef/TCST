@@ -1,5 +1,5 @@
 import {IGroup} from "./IGroup";
 
-export default interface IGroupResponse {
+export interface IGroupResponse {
     groups: IGroup[]
 }

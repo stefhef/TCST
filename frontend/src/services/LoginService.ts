@@ -1,5 +1,5 @@
 import {IRequestConfig, request} from "../api/api";
-import {IAuthLogin} from "../models/IAuthLogin";
+import {IAuthLogin} from "../models";
 
 
 export default class LoginService {

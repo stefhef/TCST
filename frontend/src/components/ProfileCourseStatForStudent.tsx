@@ -1,25 +1,32 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {Box, Heading, HStack, Icon, SimpleGrid, useMediaQuery, VStack, Text, Spacer, Divider} from "@chakra-ui/react";
-
-import {ICourseStat} from "../models/stat/ICourseStat";
-import StatService from "../services/StatService";
 import {useParams} from "react-router";
+import {Heading, HStack, Icon, VStack, Text, Spacer, Divider} from "@chakra-ui/react";
+import {ICourseStat} from "../models";
 import {getTaskStatusColorScheme} from "../common/colors";
-import {BorderShadowBox} from "./BorderShadowBox";
+import {BorderShadowBox, BaseSpinner} from "./index";
+import {useQuery} from "@apollo/client";
+import GET_COURSE_STAT_FOR_STUDENT from "../request/GET_COURSE_STAT_FOR_STUDENT";
 
 import './ProfileCourse.css'
-import {BaseSpinner} from "./BaseSpinner";
 
-const ProfileCourseStatForStudent: FunctionComponent = () => {
+export const ProfileCourseStatForStudent: FunctionComponent = () => {
     const {groupId, courseId} = useParams();
     const [courseStat, setCourseStat] = useState<ICourseStat>()
     const [isLoading, setIsLoading] = useState<boolean>(true)
+
+    const {data, loading, error} = useQuery(GET_COURSE_STAT_FOR_STUDENT,
+        {variables: {"groupId": Number(groupId), "courseId": Number(courseId)}})
+
+    if (error) {
+        console.log(`Apollo error: ${error}`)
+    }
+
     useEffect(() => {
-        StatService.getCourseStatForStudent(groupId!, courseId!).then((course) => {
-            setCourseStat(course)
+        if (data) {
+            setCourseStat(data.get_course_stat_for_student)
             setIsLoading(false)
-        })
-    }, [])
+        }
+    }, [data])
 
     if (isLoading) {
         return <BaseSpinner />
@@ -59,7 +66,4 @@ const ProfileCourseStatForStudent: FunctionComponent = () => {
             })}
         </VStack>
     );
-
-}
-
-export default ProfileCourseStatForStudent;
+};

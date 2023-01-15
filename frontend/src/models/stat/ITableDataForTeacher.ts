@@ -1,5 +1,4 @@
-import {ISolutionStatus} from "../ITask";
-import {IUser} from "../IUser";
+import {IUser, ISolutionStatus} from "../index";
 
 interface ITaskStudentDataForTeacher {
     task_id: number

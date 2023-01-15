@@ -12,14 +12,9 @@ import {
     VStack,
 } from '@chakra-ui/react';
 
-import {BaseSpinner} from "../components/BaseSpinner";
-import {LessonPreviewForStudent} from "../components/LessonPreviewForStudent";
-import {Layout} from "../components/layouts/Layout";
-import {LessonPreviewForTeacher} from "../components/LessonPreviewForTeacher";
-import {ILessonsResponse} from "../models/ILessonsResponse";
-import {ICourse} from "../models/ICourse";
-import {IGroupRole} from "../models/IGroupRole";
-import {useTypedSelector} from "../hooks/useTypedSelector";
+import {BaseSpinner, LessonPreviewForTeacher, LessonPreviewForStudent, Layout} from "../components";
+import {ICourse, ILessonsResponse, IGroupRole} from "../models";
+import {useTypedSelector} from "../hooks";
 import {useQuery} from "@apollo/client";
 import GET_LESSONS_COURSE_ROLE from '../request/GET_LESSONS_COURSE_ROLE';
 

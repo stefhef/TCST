@@ -1,9 +1,8 @@
-import {useParams} from "react-router";
 import React, {useEffect, useState} from "react";
-import {ISolutionStatus, ITask} from "../models/ITask";
-import {IGroupRole} from "../models/IGroupRole";
-import {useActions} from "../hooks/useActions";
-import {useTypedSelector} from "../hooks/useTypedSelector";
+import {useParams} from "react-router";
+import { useNavigate } from 'react-router-dom';
+import Dropzone from "react-dropzone";
+import {BiSend, GoFileCode} from "react-icons/all";
 import {
     Box,
     Button,
@@ -25,22 +24,14 @@ import {
     Text,
     useDisclosure
 } from "@chakra-ui/react";
-import {ISolution} from "../models/ISolution";
+import {ISolution, ISolutionStatus, ITask, IGroupRole} from "../models";
 import fileDialog from "file-dialog";
 import SolutionService from "../services/SolutionService";
 import GroupService from "../services/GroupService";
 import TaskService from "../services/TaskService";
-import {Layout} from "../components/layouts/Layout";
-import {TaskAttachment} from "../components/TaskAttachment";
-import {TaskInfo} from "../components/TaskInfo";
-import {BiSend, GoFileCode} from "react-icons/all";
-import {BorderShadowBox} from "../components/BorderShadowBox";
-import {SolutionInfo} from "../components/SolutionInfo";
-import {TaskStudentsList} from "../components/TaskStudentsList";
-import Chat from "../components/Chat";
-import {BaseSpinner} from "../components/BaseSpinner";
-import Dropzone from "react-dropzone";
-import { useNavigate } from 'react-router-dom';
+import {Layout, TaskAttachment, TaskInfo, BorderShadowBox,
+    SolutionInfo, TaskStudentsList, BaseSpinner, Chat} from "../components";
+import {useActions, useTypedSelector} from "../hooks";
 
 
 export default function TaskPage() {
